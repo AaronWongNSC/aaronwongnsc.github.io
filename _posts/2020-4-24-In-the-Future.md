@@ -1,8 +1,9 @@
 ---
 layout: post
-title: My First Github Blog Post
+title: Not My First Blog Post
 tags: Test
 category: Something Else
+published: true
 ---
 
 Testing
