@@ -6,7 +6,8 @@
 name: Aaron Wong
 
 # Short bio or description (displayed in the header)
-description: I'm math professor at Nevada State College learning Data Science on my sabbatical (July 1-December 31, 2020).
+description: I'm math professor at Nevada State College learning data science on my sabbatical (July 1-December 31, 2020). This is
+how I'm going to keep a record of what I've done.
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 # avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
@@ -21,14 +22,14 @@ footer-links:
   email:
   facebook:
   flickr:
-  # github: barryclark/jekyll-now
+  github: aaronwongnsc/jekyll-now
   instagram:
   linkedin:
   pinterest:
   rss: # just type anything here for a working RSS icon
   # twitter: jekyllrb
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
-  youtube: # channel/<your_long_string> or user/<user-name>
+  youtube: channel/UCBvO3V-CAyAaoQP3Ekd9ZDA
   googleplus: # anything in your profile username that comes after plus.google.com/
 
 
