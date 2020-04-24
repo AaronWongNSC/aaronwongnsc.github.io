@@ -3,8 +3,9 @@ layout: post
 title: My First Github Blog Post
 tags: Test
 category: Something
+published: True
 ---
 
-In theory, this is going to work.
+In theory, this is going to work. I'm still playing with this.
 
 https://www.smashingmagazine.com/2014/08/build-blog-jekyll-github-pages/
