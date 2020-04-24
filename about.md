@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+After spending 4-5 years learning about data science on my own, I applied to take a sabbatical so that I can formalize that knowledge and try to put it to work. Although my sabbatical technically doesn't start until July 1, 2020, in light of being stuck at home a lot right now, I've decided to start to organize a few of the things that I'm going to be trying to accomplish during my 6 months away from campus.
 
-### More Information
+### Who am I?
 
-A place to include any other types of information that you'd like to include about yourself.
-
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+I'm a math professor at Nevada State College. 
