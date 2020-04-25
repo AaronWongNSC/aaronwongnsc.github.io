@@ -10,4 +10,4 @@ Right now, the blog setup is pretty minimal. I simply followed [Barry Clark's in
 
 I was not able to get any of the themes to work. Github has a list of [supported themes](https://pages.github.com/themes/) but when I tried to apply it I got an email that said *"You are attempting to use a Jekyll theme, 'midnight', which is not supported by GutHub pages."* Maybe I'm doing something wrong. The [instructions](https://help.github.com/en/github/working-with-github-pages/adding-a-theme-to-your-github-pages-site-using-jekyll) seems to say that if I put `theme: midnight` into the *_config.yml* file, that this should just work. But it didn't. I'll have to investigate that further.
 
-But right now, everything is a black box. I've never used this before and so right now things work and I'm not entirely sure what's happening. I'll probably start by trying to break down the files in the *_layouts* folder.
+But everything is a black box. I've never used this before. Things work, but I'm not entirely sure what's happening. I'll probably start by trying to break down the files in the *_layouts* folder.
