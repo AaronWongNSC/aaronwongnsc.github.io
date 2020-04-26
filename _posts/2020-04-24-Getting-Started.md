@@ -8,11 +8,11 @@ published: True
 
 I guess I'll make this one my first true blog post. I've been playing around with this for a little bit, and I think I know enough to get myself started.
 
-# Purpose
+## Purpose
 
 Why am I even doing this? I'm going on sabbatical this summer with the intention of getting more connected to the data science world and formalizing a lot of the knowledge that I've picked up informally over the last 5-6 years. I've thrown up a few things on github in the past, but this is my first attempt to really try to take ownership of the space.
 
-# Contents
+## Contents
 
 This is primarily just about me providing myself a space to condense my experiences and organize the things that I'm learning. At this point, it's really just for me. If other people find this and think it's useful, then that's a bonus. So this is just going to be a repository for me to dump information that I pick up along my journey.
 
