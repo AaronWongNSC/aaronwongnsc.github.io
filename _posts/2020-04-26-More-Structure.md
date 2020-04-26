@@ -14,7 +14,7 @@ One of the first things I wanted to do was to create a right side navigation col
 
 This is the new "container" definition. The only change was to the max-width property:
 
-```
+```css
 .container {
   margin: 0 auto;
   max-width: 1200px;
@@ -27,7 +27,7 @@ This is the new "container" definition. The only change was to the max-width pro
 
 And I added these new containers to handle the left and right columns:
 
-```
+```css
 .body_container {
   margin: 0 auto;
   max-width: 1200px;
@@ -60,7 +60,8 @@ And I added these new containers to handle the left and right columns:
 
 I also changed the `default.html` page to incoporate this structure. (Note: The right_container will be filled in later. See below.)
 
-```
+{% raw %}
+```html
 <div id="body-wrapper" class="body_container">
   <div id="main" role="main" class="left_container">
     {{ content }}
@@ -70,11 +71,13 @@ I also changed the `default.html` page to incoporate this structure. (Note: The 
   </div>
 </div>
 ```
+{% endraw %}
 
 ## Showing Previous Posts
 
 It turned out to be pretty straightforward to get the posts listed. It was pretty much nothing to create a loop that just listed the post titles because I just stole the code from the `index.html` page and put it into the `default.html` layout (since I wanted the right column to be stable across all the pages).
 
+{% raw %}
 ```
 {% for post in site.posts %}
   <article class="post">
@@ -86,6 +89,7 @@ It turned out to be pretty straightforward to get the posts listed. It was prett
   </article>
 {% endfor %}
 ```
+{% endraw %}
 
 ## Tags
 
