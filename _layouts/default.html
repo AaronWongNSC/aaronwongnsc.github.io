@@ -39,7 +39,14 @@
         {{ content }}
       </div>
       <div id="sidebar" role="sidebar" class="right_container">
-        Testing stuff
+        {% for post in site.posts %}
+          <article class="post">
+            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            <div class="date">
+              {{ post.date | date: "%B %e, %Y" }}
+            </div>
+          </article>
+        {% endfor %}
       </div>
     </div>
 
