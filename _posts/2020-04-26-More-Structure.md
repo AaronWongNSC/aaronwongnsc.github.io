@@ -13,6 +13,7 @@ At this point, I'm working on a lot of the blog infrastructure. There might be a
 One of the first things I wanted to do was to create a right side navigation column that can be used to show previous posts, tags, categories, and other things. I mostly followed the [w3schools structure](https://www.w3schools.com/howto/howto_css_blog_layout.asp) to show me how to get the columns side-by-side. The original width of the blog was set to be 760px, which I expanded to 1200px. I also made the two columns 800px and 400px. I may change that to 900/300 later, but I want to just leave that alone for now.
 
 This is the new "container" definition. The only change was to the max-width property:
+
     .container {
       margin: 0 auto;
       max-width: 1200px;
@@ -22,34 +23,46 @@ This is the new "container" definition. The only change was to the max-width pro
 
 And I added these new containers to handle the left and right columns:
 
-.body_container {
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 0 10px;
-  width: 100%;
-}
+    .body_container {
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 0 10px;
+      width: 100%;
+    }
 
-.body_container:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+    .body_container:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
 
-.left_container {
-  margin: 0 auto;
-  max-width: 800px;
-  padding: 0 10px;
-  width: 66%;
-  float: left
-}
+    .left_container {
+      margin: 0 auto;
+      max-width: 800px;
+      padding: 0 10px;
+      width: 66%;
+      float: left
+    }
 
-.right_container {
-  margin: 0 auto;
-  max-width: 400px;
-  padding: 0 10px;
-  width: 33%;
-  float: left
-}
+    .right_container {
+      margin: 0 auto;
+      max-width: 400px;
+      padding: 0 10px;
+      width: 33%;
+      float: left
+    }
+
+I also changed the `default.html` page to incoporate this structure. (Note: The right_container will be filled in later.)
+
+    <div id="body-wrapper" class="body_container">
+      <div id="main" role="main" class="left_container">
+        {{ content }}
+      </div>
+      <div id="sidebar" role="sidebar" class="right_container">
+        <h3>Previous Posts</h3>
+      </div>
+    </div>
+
 
 ## Showing Categories and Tags
 
