@@ -23,7 +23,7 @@ This is the new "container" definition. The only change was to the max-width pro
 }
 ```
 
-(Note: I don't know why the code blocks are done this way. If I fix this in the future, then this will go away and I will probably not remove this comment. But the code blocks look silly with the current format.)
+(Note: I don't know why the code blocks are done this way. If I fix this in the future, then this will go away and I will probably not remove this comment. But the code blocks look silly with the current format. -- FIXED! See below.)
 
 And I added these new containers to handle the left and right columns:
 
@@ -134,3 +134,20 @@ I just put this in above the loop for the post tags:
 ```
 
 And there's a category class that I put into the style sheet that is identical to the tag class. I understand this to be a best practice, because if I ever decide to change the formatting, I can do it all at once through the style sheet instead of having to go back and change all the HTML tags.
+
+## Code Blocks
+
+I played around for a bit to try to fix the code blocks, but eventually resorted to searching the internet for answers. Fortunately, I found a [stack overflow](https://stackoverflow.com/questions/55308142/why-do-i-get-a-double-frame-around-markdown-code-block-on-jekyll-site) page that fixed the problem. I don't think I would have been able to find this myself. I got as far as finding the specific css code on my own, but I didn't really understand the double border problem. The HTML code did show two layers of highlighting (`<div class="highlight">` and `<pre class="highlight">`), but I think it would have taken me a while to figure out how to fix it. But now that I see the solution, it makes sense. The `.highlight` simply need to be restricted in a way that it only gets called once. I might have figured out the `overflow: auto` part on my own if I spent more time on it. But I was really just focused on getting the double boxes out of there.
+
+```
+pre.highlight {
+  background-color: #efefef;
+  padding: 7px 7px 7px 10px;
+  border: 1px solid #ddd;
+  -moz-box-shadow: 3px 3px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
+  box-shadow: 3px 3px rgba(0,0,0,0.1);
+  margin: 20px 0 20px 0;
+  overflow: auto;
+}
+```
