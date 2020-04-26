@@ -39,6 +39,7 @@
         {{ content }}
       </div>
       <div id="sidebar" role="sidebar" class="right_container">
+        <h3>Previous Posts</h3>
         {% for post in site.posts %}
           <article class="post">
             <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
