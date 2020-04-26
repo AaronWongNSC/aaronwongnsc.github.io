@@ -58,7 +58,7 @@ And I added these new containers to handle the left and right columns:
 }
 ```
 
-I also changed the `default.html` page to incoporate this structure. (Note: The right_container will be filled in later.)
+I also changed the `default.html` page to incoporate this structure. (Note: The right_container will be filled in later. See below.)
 
 ```
 <div id="body-wrapper" class="body_container">
@@ -69,6 +69,22 @@ I also changed the `default.html` page to incoporate this structure. (Note: The 
     <h3>Previous Posts</h3>
   </div>
 </div>
+```
+
+## Showing Previous Posts
+
+It turned out to be pretty straightforward to get the posts listed. It was pretty much nothing to create a loop that just listed the post titles because I just stole the code from the `index.html` page and put it into the `default.html` layout (since I wanted the right column to be stable across all the pages).
+
+```
+{% for post in site.posts %}
+  <article class="post">
+    <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+    <div class="date">
+      {{ post.date | date: "%B %e, %Y" }}
+    </div>
+    <br>
+  </article>
+{% endfor %}
 ```
 
 ## Tags
@@ -98,3 +114,7 @@ I also had to add the tag class into the stylesheet:
 
 It as at this point, that I found out that the color codes are part of the `_variables.scss` file in the `/_sass/` folder. They didn't have a lot of color options there. If I needed colors, I could either add to that file or create my own color file. That's not something I'm going to worry about right now.
 I don't really know what the canonical indentation scheme is for this sort of thing. Maybe there isn't one.
+
+## Categories
+
+I don't really know how I'll use categories
