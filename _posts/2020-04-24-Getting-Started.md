@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Getting Started
-tags: 
+tags: blog overview
 category: general
 published: True
 ---
