@@ -14,12 +14,14 @@ One of the first things I wanted to do was to create a right side navigation col
 
 This is the new "container" definition. The only change was to the max-width property:
 
+```
     .container {
       margin: 0 auto;
       max-width: 1200px;
       padding: 0 10px;
       width: 100%;
     }
+```
 
 And I added these new containers to handle the left and right columns:
 
