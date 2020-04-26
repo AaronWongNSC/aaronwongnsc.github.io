@@ -13,17 +13,14 @@ At this point, I'm working on a lot of the blog infrastructure. There might be a
 One of the first things I wanted to do was to create a right side navigation column that can be used to show previous posts, tags, categories, and other things. I mostly followed the [w3schools structure](https://www.w3schools.com/howto/howto_css_blog_layout.asp) to show me how to get the columns side-by-side. The original width of the blog was set to be 760px, which I expanded to 1200px. I also made the two columns 800px and 400px. I may change that to 900/300 later, but I want to just leave that alone for now.
 
 This is the new "container" definition. The only change was to the max-width property:
-`
-.container {
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 0 10px;
-  width: 100%;
-}
-`
-And I added these new containers to handle the left and right columns:
+    .container {
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 0 10px;
+      width: 100%;
+    }
 
-`
+And I added these new containers to handle the left and right columns:
 
 .body_container {
   margin: 0 auto;
@@ -53,7 +50,6 @@ And I added these new containers to handle the left and right columns:
   width: 33%;
   float: left
 }
-`
 
 ## Showing Categories and Tags
 
