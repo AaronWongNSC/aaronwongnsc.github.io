@@ -23,6 +23,8 @@ This is the new "container" definition. The only change was to the max-width pro
 }
 ```
 
+(Note: I don't know why the code blocks are done this way. If I fix this in the future, then this will go away and I will probably not remove this comment. But the code blocks look silly with the current format.)
+
 And I added these new containers to handle the left and right columns:
 
 ```
@@ -69,5 +71,30 @@ I also changed the `default.html` page to incoporate this structure. (Note: The 
 </div>
 ```
 
-## Showing Categories and Tags
+## Tags
 
+The next project was to create tags following [these instructions](https://longqian.me/2017/02/09/github-jekyll-tag/). Since I'm not trying to run jekyll on my computer and just letting github do all of that, I'm going to have to manually create pages for each tag. But since I'm doing this right from the start, it shouldn't be too bad.
+
+I made a minor modification to the part of the code that includes the tag so that it would look the way I wanted it to. Inside of the loop of the `index.html` page that shows the post titles, just above the code that shows the post date, I added this code:
+
+```
+<div class="tag">
+  Tags:
+  {% for tag in post.tags %}
+    {% capture tag_name %}{{ tag }}{% endcapture %}
+    <a href="/tag/{{ tag_name }}">{{ tag_name }}&nbsp;</a>
+  {% endfor %}
+</div>
+```
+
+I also had to add the tag class into the stylesheet:
+
+```
+.tag {
+  font-size: 12px;
+  color: $darkGray;
+}
+```
+
+It as at this point, that I found out that the color codes are part of the `_variables.scss` file in the `/_sass/` folder. They didn't have a lot of color options there. If I needed colors, I could either add to that file or create my own color file. That's not something I'm going to worry about right now.
+I don't really know what the canonical indentation scheme is for this sort of thing. Maybe there isn't one.
