@@ -78,7 +78,7 @@ I also changed the `default.html` page to incoporate this structure. (Note: The 
 It turned out to be pretty straightforward to get the posts listed. It was pretty much nothing to create a loop that just listed the post titles because I just stole the code from the `index.html` page and put it into the `default.html` layout (since I wanted the right column to be stable across all the pages).
 
 {% raw %}
-```
+```html
 {% for post in site.posts %}
   <article class="post">
     <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
@@ -97,7 +97,8 @@ The next project was to create tags following [these instructions](https://longq
 
 I made a minor modification to the part of the code that includes the tag so that it would look the way I wanted it to. Inside of the loop of the `index.html` page that shows the post titles, just above the code that shows the post date, I added this code:
 
-```
+{% raw %}
+```html
 <div class="tag">
   Tags:
   {% for tag in post.tags %}
@@ -106,10 +107,11 @@ I made a minor modification to the part of the code that includes the tag so tha
   {% endfor %}
 </div>
 ```
+{% endraw %}
 
 I also had to add the tag class into the stylesheet:
 
-```
+```css
 .tag {
   font-size: 12px;
   color: $darkGray;
@@ -121,4 +123,14 @@ I don't really know what the canonical indentation scheme is for this sort of th
 
 ## Categories
 
-I don't really know how I'll use categories
+I don't really know how I'll use categories just yet. I don't really have a distinction between categories and tags in my mind. I guess that categories are supposed to be more like folders and tags are supposed to be a flat organizational scheme. But while I know what that means, I don't know what it means for me in terms of my own organizational scheme. So for now, they're just going to be listed and I hopefully won't regret it later.
+
+I just put this in above the loop for the post tags:
+
+```html
+<div class="category">
+  Category: {{ post.category }} <br>
+</div>
+```
+
+And there's a category class that I put into the style sheet that is identical to the tag class. I understand this to be a best practice, because if I ever decide to change the formatting, I can do it all at once through the style sheet instead of having to go back and change all the HTML tags.
