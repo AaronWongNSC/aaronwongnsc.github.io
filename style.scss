@@ -30,6 +30,22 @@ body {
   width: 100%;
 }
 
+.left_container {
+  margin: 0 auto;
+  max-width: 740px;
+  padding: 0 10px;
+  width: 100%;
+  float: left
+}
+
+.right_container {
+  margin: 0 auto;
+  max-width: 200px;
+  padding: 0 10px;
+  width: 100%;
+  float: right
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: $helveticaNeue;
   color: $darkerGray;
