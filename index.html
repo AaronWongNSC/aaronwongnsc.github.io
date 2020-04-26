@@ -8,7 +8,10 @@ layout: default
 
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
       <div class="category">
-        Category: {{ post.category }}
+        Category: {{ post.category }} <br>
+      </div>
+      <div class="tag">
+        Tags: {% for tag in post.tags %} {{ tag }}{% endfor %} <br>
       </div>
       <div class="date">
         {{ post.date | date: "%B %e, %Y" }}
