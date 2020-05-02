@@ -1,0 +1,326 @@
+---
+title: "A Quick Study of Linear Regressions"
+author: "Aaron Wong"
+date: "`r format(Sys.time(), '%B %e, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+keep_tex: yes
+header-includes:
+- \newcommand{\bitem}{\begin{itemize}}
+- \newcommand{\eitem}{\end{itemize}}
+urlcolor: blue
+---
+
+\newcommand{\SqE}{\operatorname{SqE}}
+
+This document gives a brief overview of the calculation of two variable linear regression. The derivation will be worked out from first principles and basic ideas, and a step-by-step computational guide will also be presented. (This document is functionally a test case for using R to create documents that are a mix of R and \LaTeX.)
+
+## An Example Using R
+
+We will begin by just running an example through R. This will generate information that the rest of the document will explain the derivation and interpretation of this information. We will begin by creating the data set.
+
+```{r}
+# Data
+X = c(3, 5, 8, 10, 17)
+Y = c(1, 8, 3, 14, 10)
+```
+
+This data set consists of the following ordered pairs:
+  
+```{r echo = FALSE, results = "asis"}
+textinfo <- data.frame(
+  Xcoord = X,
+  Ycoord = Y)
+
+template <- "%i & %i \\\\
+" # dont't forget the newline
+
+cat(sprintf('\\begin{center}'))
+cat(sprintf('  \\begin{tabular}{c|c}'))
+cat(sprintf('    $X$ & $Y$ \\\\ \\hline'))
+for (i in seq(nrow(textinfo))) {
+  cat(sprintf(template, textinfo$Xcoord[i], textinfo$Ycoord[i]))
+}
+cat(sprintf('  \\end{tabular}'))
+cat(sprintf('\\end{center}'))
+```
+
+We can now have R determine the linear model that best fits this data.
+```{r}
+# Create the linear model
+regression = lm(Y ~ X)
+summary(regression)
+```
+
+The challenge is that this information requires interpretation. What does all of this information mean? And what other information might be helpful? We're going to explore all of this information.
+
+## Linear Model
+
+```{r, echo = FALSE}
+Yp <- regression$coefficients[1] + regression$coefficients[2]*X
+
+MX = mean(X)
+MY = mean(Y)
+
+x <- X - MX
+y <- Y - MY
+
+sX <- sd(X)
+sY <- sd(Y)
+
+r <- sum(x*y)/(sqrt(sum(x^2) * sum(y^2)))
+
+```
+
+
+The command ```regression = lm(Y ~ X)``` creates a linear model called ```regression```. The goal of this model is to come up with an equation of the form $Y' = a + bX$ that is the ``best fit'' for the data stored in the variables $X$ and $Y$. (Note: $Y'$ is not a derivative in this notation.) Let's start by looking at a graph of the data.
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center", cex = 0.8}
+# Plot the data with the linear model
+plot(X,Y,
+     xlim = c(0,20), ylim = c(0,20))
+```
+
+We can see from this graph that there is a general lower-left to upper-right behavior of the data. As one variable gets larger, the other variable tends to get larger as well. It is not possible to connect all the dots with a single line, so if we tried to approximate this data with a line, there will always be some type of error. But some lines do a better job than others. In the following graph, the blue and green lines do a better job at matching the behavior as the red line. But between the blue and green line, it's not so obvious which one is better.
+
+```{r, echo = FALSE, fig.height = 4, fig.width = 6, fig.align = "center", cex = 0.8}
+# Plot the data with the linear model
+plot(X,Y,
+     xlim = c(0,20), ylim = c(0,20))
+abline(a = 15, b = -0.4, col = 'red')
+abline(a = 1, b = 0.8, col = 'green')
+abline(a = regression$coefficients[1], b = regression$coefficients[2], col = 'blue')
+```
+
+### Residuals
+
+Before we can even begin to discuss the ``best'' fit, we need to devise a method for measuring how good a fit actually is. We will do this by establishing an error value for each data point relative to the line. Suppose we have an approximating function $Y' = f(X)$. Then the residual for each point $(X_i,Y_i)$ is defined as the (signed) distance between the point and its approximation $(X_i,Y_i')$. This graph shows the coordinates of all the points (black), all of the approximations (blue), and all of the residuals (red).
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center", cex = 0.8, include = FALSE}
+# Plot the data
+plot(X,Y,
+     xlim = c(0,20), ylim = c(0,20))
+
+points(X, Yp, col = 'blue')
+abline(a = regression$coefficients[1], b = regression$coefficients[2], col = 'blue')
+
+text(X[1], Y[1], label = paste('(', X[1], ',', Y[1], ')'),
+     pos = 4, cex = 0.6)
+text(X[2], Y[2], label = paste('(', X[2], ',', Y[2], ')'),
+     pos = 3, cex = 0.6)
+text(X[3], Y[3], label = paste('(', X[3], ',', Y[3], ')'),
+     pos = 1, cex = 0.6)
+text(X[4], Y[4], label = paste('(', X[4], ',', Y[4], ')'),
+     pos = 3, cex = 0.6)
+text(X[5], Y[5], label = paste('(', X[5], ',', Y[5], ')'),
+     pos = 1, cex = 0.6)
+
+text(X[1], Yp[1], label = paste('(', X[1], ',', format(round(Yp[1], 2), nsmall = 2), ')'),
+     pos = 3, cex = 0.6, col = 'blue')
+text(X[2], Yp[2], label = paste('(', X[2], ',', format(round(Yp[2], 2), nsmall = 2), ')'),
+     pos = 1, cex = 0.6, col = 'blue')
+text(X[3], Yp[3], label = paste('(', X[3], ',', format(round(Yp[3], 2), nsmall = 2), ')'),
+     pos = 3, cex = 0.6, col = 'blue')
+text(X[4], Yp[4], label = paste('(', X[4], ',', format(round(Yp[4], 2), nsmall = 2), ')'),
+     pos = 1, cex = 0.6, col = 'blue')
+text(X[5], Yp[5], label = paste('(', X[5], ',', format(round(Yp[5], 2), nsmall = 2), ')'),
+     pos = 3, cex = 0.6, col = 'blue')
+
+for(i in seq(1,5))
+{
+  segments(X, Y, X, Yp, col = 'red')
+}
+
+text(X[1], (Y[1] + Yp[1])/2, label = format(round(Y[1] - Yp[1], 2), nsmall = 2),
+     pos = 2, cex = 0.6, col = 'red')
+text(X[2], (Y[2] + Yp[2])/2, label = format(round(Y[2] - Yp[2], 2), nsmall = 2),
+     pos = 4, cex = 0.6, col = 'red')
+text(X[3], (Y[3] + Yp[3])/2, label = format(round(Y[3] - Yp[3], 2), nsmall = 2),
+     pos = 2, cex = 0.6, col = 'red')
+text(X[4], (Y[4] + Yp[4])/2, label = format(round(Y[4] - Yp[4], 2), nsmall = 2),
+     pos = 4, cex = 0.6, col = 'red')
+text(X[5], (Y[5] + Yp[5])/2, label = format(round(Y[5] - Yp[5], 2), nsmall = 2),
+     pos = 4, cex = 0.6, col = 'red')
+```
+
+### Least Squares
+
+For every line that we can draw (in fact, every function we can imagine), we will be able to compute these residuals. Intuitively, we might imagine that the ``total error'' we might use would be the sum of the absolute values of the residuals. And while this does give us a value that can be used (referred to as the \emph{absolute deviation}), we will actually use the sum of the squares of the residuals. There are [several reasons](https://stats.stackexchange.com/questions/46019/why-squared-residuals-instead-of-absolute-residuals-in-ols-estimation) for this choice, but for our purposes we're going to use the fact that the absolute value function is not differentiable. The reason for this is that our goal will be to find the line that minimizes this error, giving us the \emph{least squares} method.
+
+### Deviation Scores
+
+For reasons that will become more clear in the derivation of the least squares solution, it is helpful to define a new set of variables. Let $M_X$ and $M_Y$ be the means of the variables $X$ and $Y$ and let $x_i = X_i - M_X$ and $y_i = Y_i - M_Y$. These are called the \emph{deviation scores} and represent a ``re-centering'' of the data so that $M_x$ and $M_y$ (the means of $x$ and $y$) are both zero.
+
+### Least Squares Solution
+
+We will now formalize the idea of the least squares method and apply it to the deviation scores. Suppose we have a set of points $(x_i, y_i)$ (for $i = 1, 2, \ldots, N$) and let $\mathcal{F}$ be some set of functions. We define the function $\SqE: \mathcal{F} \to \mathbb{R}$ by $\SqE(f) = \sum_{i=1}^N (y_i - y_i')^2$, where $f \in \mathcal{F}$ and $y_i' = f(x_i)$. Also, the only sum that will be in summation notation will be over the index of points, and so we will be lazy and drop that part of the notation. The goal is to identify the function $f$ that minimizes the value of the function $\SqE$.
+
+Since we are doing a linear regression, we will let $\mathcal{F}$ be the set of all linear functions of the form $f(x) = a + bx$. Notice that if we treat $a$ and $b$ as real-valued continuous parameters, we have that
+\begin{align*}
+  \frac{\partial}{\partial a} \SqE & = \frac{\partial}{\partial a} \left( \sum (y_i - y_i')^2 \right) =\sum 2 (y_i - y_i') \cdot \frac{\partial}{\partial a}(-y_i') \\
+  & = -2 \sum (y_i - y_i') \frac{\partial}{\partial a}(a + bx_i) = -2 \sum (y_i - y_i')
+\end{align*}
+and
+\begin{align*}
+  \frac{\partial}{\partial b} \SqE & = \frac{\partial}{\partial b} \left( \sum (y_i - y_i')^2 \right) =\sum 2 (y_i - y_i') \cdot \frac{\partial}{\partial b}(-y_i') \\
+  & = -2 \sum (y_i - y_i') \frac{\partial}{\partial b}(a + bx_i) = -2 \sum (y_i - y_i') \cdot x_i
+\end{align*}
+
+By setting $\frac{\partial}{\partial a} \SqE = 0$, we get that $\sum y_i' = \sum y$, which is equivalent to $Na + b \sum x_i = \sum y_i$, or $a + b M_x = M_y$. But we've chose the variables $x$ and $y$ so that their means are zero, and so this implies that $a = 0$.
+
+Next, we will set $\frac{\partial}{\partial b} \SqE = 0$. We can see that this leads to $\sum x_i y_i' = \sum x_i y_i$, which can be written as $a \sum x_i + b \sum x_i^2 = \sum x_i y_i$. Since $a = 0$, this implies that $b = \frac{ \sum x_i y_i }{ \sum x_i^2 }$. It turns out to be convenient to write this as $b = \frac{ \sum x_i y_i }{ \sqrt{\sum x_i^2 \sum y_i^2}} \cdot \sqrt{\frac{\sum y_i^2}{\sum x_i^2}} = r \frac{s_y}{s_x}$, where $s_x$ and $s_y$ are the standard deivations of the variables $x$ and $y$ and $r$ is the Pearson correlation coefficient (discussed below). We have implicitly used the population standard deviation here ($s$ instead of $\sigma$), but the whole derivation can be done with an entire population with no significant changes.
+
+This shows us that the line of best fit for the deviation scores is given by $y = r \frac{s_y}{s_x} x$. We can substitute back to the orginal variables (using the fact that a translation of variables does not affect the standard deviation) to get $Y - M_Y = r \frac{s_Y}{s_X} (X - M_X)$, which can be rewritten as $Y = \left( r \cdot \frac{s_Y}{s_X} \right) x + (M_Y - r M_X \cdot \frac{s_Y}{s_X} )$.
+
+### The Pearson Correlation Coefficient
+
+The Pearson correlation ceofficient is a measure of how well (or how poorly) the data is fit by a line. It is defined by $r = \frac{\sum x_i y_i}{ \sqrt{ \sum x_i^2 \sum y_i^2 } }$. (Reminder: We are still using the deviation scores in this section.) Here are some of the properties of the Pearson correlation coefficient:
+\begin{itemize}
+  \item $\lvert r \rvert \leq 1$
+  \item The sign of $r$ indicates whether the slope of the line of best fit is positive or negative.
+  \item The magnitude of $r$ indicates how well the line of best fit approximates the data. If $\lvert r \rvert = 1$ then the points lie exactly on a line. If $r = 0$ then the data does not match a line at all (or all the data is on a horizontal line, but that doesn't happen in practice).
+\end{itemize}
+
+## A Computational Method
+
+Although all of the calculations are laid out in the derivations give the formulas for calculating the least squares fit of the data, it is helpful to have all of these calculations organized into a computational method that is easy to follow. Here are the charts that perform that organizational role:
+
+```{r echo = FALSE, results = "asis"}
+textinfo <- data.frame(
+  rownum = seq(length(X)),
+  Xcoord = X,
+  Ycoord = Y)
+
+template <- "%i & %i & %i & & & & &  \\\\
+" # dont't forget the newline
+
+cat('\\[  \\begin{array}{r||r|r||r|r||r|r|r}')
+cat('   & \\multicolumn{1}{c|}{X} & \\multicolumn{1}{c||}{Y} & \\multicolumn{1}{c|}{x} & \\multicolumn{1}{c||}{y} & \\multicolumn{1}{c|}{x^2} & \\multicolumn{1}{c|}{y^2} & \\multicolumn{1}{c}{xy} \\\\ \\hline')
+for (i in seq(nrow(textinfo))) {
+  cat(sprintf(template, textinfo$rownum[i], textinfo$Xcoord[i], textinfo$Ycoord[i]))
+}
+cat('\\hline')
+cat('\\Sigma & & & & & & \\\\')
+cat('M & & & & & & ')
+
+cat('\\end{array} \\hspace{2cm} \\begin{array}{r||r|r||r|r|r}')
+
+template <- "%i & %i & %i & & &  \\\\
+" # dont't forget the newline
+
+cat('   & \\multicolumn{1}{c|}{X} & \\multicolumn{1}{c||}{Y} & \\multicolumn{1}{c|}{Y\'} & \\multicolumn{1}{c|}{Y - Y\'} & \\multicolumn{1}{c}{(Y - Y\')^2} \\\\ \\hline')
+for (i in seq(nrow(textinfo))) {
+  cat(sprintf(template, textinfo$rownum[i], textinfo$Xcoord[i], textinfo$Ycoord[i]))
+}
+cat('\\hline')
+cat('\\Sigma & & & & \\\\ \\multicolumn{1}{c}{}  \\\\')
+cat('\\end{array} \\]')
+```
+
+Here are the steps for the first chart:
+
+\begin{itemize}
+  \item The initial data is filled in (as shown).
+  \item The $\Sigma$ row is for the sum of the values in the column.
+  \item The $M$ row is for the mean of the column.
+  \item The formulas for $x$ and $y$ are $x = X - M_X$ and $y = Y - M_Y$. If calculated correctly, the $\Sigma$ and $M$ values for these columns should be 0.
+  \item The remaining columns are calculated as described at the top of the columns. The $\Sigma$ row is used to calculate the Pearson correlation coefficient. The means of the $x^2$ and $y^2$ give the standard deviations if the data represents a full population, otherwise you would need to divide by $N-1$. Alternatively, those spaces can simply be left blank and calculate the standard deviation somewhere else.
+\end{itemize}
+
+This is the completed version of the chart:
+
+```{r echo = FALSE, results = "asis"}
+textinfo <- data.frame(
+  rownum = seq(length(X)),
+  Xcoord = X,
+  Ycoord = Y,
+  xcoord = x,
+  ycoord = y,
+  xsq = x^2,
+  ysq = y^2,
+  xy = x*y)
+
+template <- "%i & %i & %i & %.3f & %.3f & %.3f & %.3f & %.3f  \\\\
+" # dont't forget the newline
+
+cat('\\[  \\begin{array}{r||r|r||r|r||r|r|r}')
+cat('   & \\multicolumn{1}{c|}{X} & \\multicolumn{1}{c||}{Y} & \\multicolumn{1}{c|}{x} & \\multicolumn{1}{c||}{y} & \\multicolumn{1}{c|}{x^2} & \\multicolumn{1}{c|}{y^2} & \\multicolumn{1}{c}{xy} \\\\ \\hline')
+for (i in seq(nrow(textinfo))) {
+  cat(sprintf(template, textinfo$rownum[i], textinfo$Xcoord[i], textinfo$Ycoord[i],
+              textinfo$xcoord[i], textinfo$ycoord[i],
+              textinfo$xsq[i], textinfo$ysq[i], textinfo$xy[i]))
+}
+cat('\\hline')
+cat(sprintf('\\Sigma & %i & %i & %.3f & %.3f & %.3f & %.3f & %.3f \\\\',
+            sum(X), sum(Y), sum(x), sum(y),
+            sum(textinfo$xsq), sum(textinfo$ysq), sum(textinfo$xy) ))
+cat(sprintf('M   & %.1f & %.1f & & & &', mean(X), mean(Y) ))
+
+cat('\\end{array} \\]')
+```
+
+From this chart, we can use the values at the bottom right to compute $r$:
+\[ r = \frac{\sum x_i, y_i}{ \sqrt{ \sum x_i^2 \sum y_i^2}} = \frac{`r sum(x*y)`}{\sqrt{ (`r sum(x^2)`) \cdot (`r sum(y^2)`)} } = `r r` \]
+
+We can also calculate the sample variance and sample standard deviation for both $X$ and $Y$:
+\[ \begin{array}{rlrl}
+  s_X^2 & = \frac{\sum x_i^2}{N-1} = \frac{`r sum(x^2)`}{5-1} = `r sX^2` \hspace{2cm} \phantom{.} & 
+  s_Y^2 & = \frac{\sum y_i^2}{N-1} = \frac{`r sum(y^2)`}{5-1} = `r sY^2` \\\\
+  s_X & = \sqrt{s_X^2} = `r sX` &
+  s_Y & = \sqrt{s_Y^2} = `r sY`
+\end{array} \]
+
+From this, we can use the formulas we obtained earlier to calculate the coefficients of the line of best fit:
+\begin{align*}
+  r \cdot \frac{s_Y}{s_X} & = `r r` \cdot \frac{`r sY`}{`r sX`} = `r r*sY/sX` \\
+  M_Y - r M_X \cdot \frac{s_Y}{S_X} & = `r MY` - (`r r`) \cdot (`r MX`) \cdot \frac{`r sY`}{`r sX`} = `r MY - r * MX * sY/sX`
+\end{align*}
+So $Y = \left( r \cdot \frac{s_Y}{s_X} \right) x + (M_Y - r M_X \cdot \frac{s_Y}{s_X} ) = `r r*sY/sX` X + `r MY - r * MX * sY/sX`$. We can use this to proceed to the second chart:
+\begin{itemize}
+  \item The $Y'$ column is simply the values obtained by plugging $X$ into the formula. The sum of these values should be the same as the sum of the values in the $Y$ column. The reason for this comes out of hte derivation of the least squares solution when we set the derivative to zero to find the minimum error. This is a good self-check.
+  \item The other two columns are calculations based on the formulas at the top of the chart. The sum at the bottom of the first column should be zero, and this is another self-check moment. (This value should be the difference of columns of the previous two values, which have the same sum.)
+\end{itemize}
+
+Here is the completed version of the second chart:
+
+```{r echo = FALSE, results = "asis"}
+textinfo <- data.frame(
+  rownum = seq(length(X)),
+  Xcoord = X,
+  Ycoord = Y,
+  Ypcoord = Yp,
+  residual = Y - Yp,
+  residualsq = (Y - Yp)^2)
+
+template <- "%i & %i & %i & %.3f & %.3f & %.3f \\\\
+" # dont't forget the newline
+
+cat('\\[ \\begin{array}{r||r|r||r|r|r}')
+cat('   & \\multicolumn{1}{c|}{X} & \\multicolumn{1}{c||}{Y} & \\multicolumn{1}{c|}{Y\'} & \\multicolumn{1}{c|}{Y - Y\'} & \\multicolumn{1}{c}{(Y - Y\')^2} \\\\ \\hline')
+for (i in seq(nrow(textinfo))) {
+  cat(sprintf(template, textinfo$rownum[i], textinfo$Xcoord[i], textinfo$Ycoord[i],
+              textinfo$Ypcoord[i], textinfo$residual[i], textinfo$residualsq[i]))
+}
+cat('\\hline')
+cat(sprintf('\\Sigma & %i & %i & %.3f & %.3f & %.3f \\\\ \\multicolumn{1}{c}{}  \\\\',
+            sum(X), sum(Y),
+            sum(Yp), sum(textinfo$residual), sum(textinfo$residualsq) ))
+
+cat('\\end{array} \\]')
+```
+
+
+## Comparisons with R's Model
+
+The output from the R summary of the linear model contains a lot of information. This section is just a summary of how that information matches up with the values we've discussed.
+
+\bitem
+  \item We calculated the ```Residuals``` in the $Y - Y'$ column of the second chart.
+  \item The ```Coefficients``` are the coefficients of the line of best fit, which we calculated in preparation to complete the second chart.
+  \item ```Multiple R-squared``` value is the square of the Pearson correlation coefficient: $`r r`^2 = `r r^2`$.
+\eitem
+
+There are some other values in the summary table, and those values are related to attempting to determine the statistical significance of the estimates. I may add to this document later to cover those parts.
