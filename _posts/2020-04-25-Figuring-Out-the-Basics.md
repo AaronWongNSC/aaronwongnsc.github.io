@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Figuring Out the Basics
-tags: github jekyll
+tags: GitHub Jekyll
 category: code
 published: True
 ---
