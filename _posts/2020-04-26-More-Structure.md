@@ -1,7 +1,7 @@
 ---
 layout: post
 title: More Structure
-tags: github jekyll
+tags: GitHub Jekyll
 category: code
 published: True
 ---
