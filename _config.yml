@@ -31,6 +31,8 @@ footer-links:
   youtube: channel/UCBvO3V-CAyAaoQP3Ekd9ZDA
   googleplus: # anything in your profile username that comes after plus.google.com/
 
+### PAGINATION
+paginate: 5
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
 # You can find your shortname on the Settings page of your Disqus account
