@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Getting the Blog Running
-tags: github jekyll
+tags: GitHub Jekyll
 category: code
 published: true
 ---
