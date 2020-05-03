@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Pages and Pages
-tags: Jekyll github
+tags: Jekyll GitHub
 category: code
 published: True
 ---
