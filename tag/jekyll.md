@@ -1,5 +1,5 @@
 ---
 layout: tagpage
-title: "Tag: jekyll"
-tag: jekyll
+title: "Tag: Jekyll"
+tag: Jekyll
 ---
