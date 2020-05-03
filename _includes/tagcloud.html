@@ -4,12 +4,11 @@
     {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
   {% endfor %}
 {% endcapture %}
-
-{{ temptags }}
-
 {% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
 {% for temptag in sortedtemptags %}
+  {{temptag}}
   {% assign tagitems = temptag | split: '#' %}
+  {{tagitems}}
   {% capture tagname %}{{ tagitems[1] }}{% endcapture %}
   <a href="/tag/{{ tagname }}">{{ tagname }}</a>
 {% endfor %}
