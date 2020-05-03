@@ -6,7 +6,7 @@ category: code
 published: True
 ---
 
-I've known LaTeX since my undergrdaduate days. I've been learning a lot of R in the last year, but I haven't really worked with R Markdown seriously until now. I put together an [R Markdown](https://aaronwongnsc.github.io/files/20200502-LinearRegression.Rmd) file that summarizes some information from a basic linear model. I've also posted the output as a [PDF file](https://aaronwongnsc.github.io/files/20200502-LinearRegression.pdf).
+I've known LaTeX since my undergrdaduate days. I've been learning a lot of R in the last year, but I haven't really worked with R Markdown seriously until now. I put together an [R Markdown](https://aaronwongnsc.github.io/files/20200502-LinearRegression.Rmd) file that summarizes some information for fitting bivariate data into a basic linear model. I've also posted the output as a [PDF file](https://aaronwongnsc.github.io/files/20200502-LinearRegression.pdf).
 
 ## R Markdown Basics
 
