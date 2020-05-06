@@ -17,7 +17,7 @@ Right now, there are three types of pages:
 
 As far as I can tell, the only page that is a "true"(?) HTML page that gets processed is the main index page. Everything else is generated out of markdown files. (There's an HTML file in the `/_layouts` folder that acts as the template, but that's not a specific page itself.) I want to test making some HTML pages and see if they show up. I don't really know how the files go from my repository and then get posted. My understanding is that Jekyll creates static pages, so they have to get processed into HTML and then stored somewhere. But I have no idea where "somewhere" is.
 
-## Minor Modification #1: Adding the Date
+## Minor Modification: Adding the Date
 
 In my past blogging experiences, I've been able to see the dates that things were posted. Using this setup, the dates are displayed when you look at a specific post (at the bottom), but you don't see the dates on the main page. This is strange to me. So I set out to fix it.
 
@@ -29,6 +29,6 @@ But I didn't like that it was the same font size as the other stuff. I noticed t
 
 This is a very small modification, but it's helped me to wrap my mind around the logic of the language that Jekyll uses. I can see the structure of the for loops, and I see how the variables are used to create the pages.
 
-## Minor Adjustment #1: Excerpts
+## Minor Adjustment: Excerpts
 
 Now that I know how excerpts work, I'm going to try to focus on writing blog posts with some sort of short introductory paragraph so that the excerpt only catches that portion and doesn't get too long. I don't yet know whether the main page will just get longer and longer as I make more posts, or if there's a default paginating process. I guess I'll find out when I get there.
