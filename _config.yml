@@ -31,8 +31,8 @@ footer-links:
   youtube: channel/UCBvO3V-CAyAaoQP3Ekd9ZDA
   googleplus: # anything in your profile username that comes after plus.google.com/
 
-# Pagination 
-paginate: 3
+# Pagination
+paginate: 10
 paginate_path: /page:num/
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
