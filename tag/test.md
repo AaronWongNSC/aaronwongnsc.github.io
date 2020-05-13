@@ -1,8 +1,6 @@
 ---
-layout: default
-title: "Test"
+layout: tagpage
 ---
-{% for post in paginator.posts %}
-{{ post.title }}
-{{ post.category }}
+{% for tags in site.tags %}
+  {{ tags }} <br>
 {% endfor %}
