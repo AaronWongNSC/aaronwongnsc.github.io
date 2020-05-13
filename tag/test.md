@@ -6,7 +6,9 @@ layout: testpage
 
 {{ site.time }} <br><br>
 
-{{ site.tags | join:'|'}} <br><br>
+{% for tag in site.tags %}
+  Tag: {{ tag }} <br><br>
+{% endfor %}
 
 
 <h1> Posts </h1>
@@ -14,7 +16,7 @@ layout: testpage
 {% for post in site.posts %}
   Page: {{ post.title }} <br>
   Tags: {{ post.tags | join:'|' }} <br>
-  Size of Tags: {{ post.tags.size }}
+  Size of Tags: {{ post.tags.size }} <br>
   Category: {{ post.category }}
   <br><br>
 {% endfor %}
