@@ -1,5 +1,8 @@
 ---
-layout: general
+layout: default
 title: "Test"
 ---
-{{ paginator.posts }}
+{% for post in paginator.posts %}
+{{ post.title }}
+{{ post.category }}
+{% endfor %}
