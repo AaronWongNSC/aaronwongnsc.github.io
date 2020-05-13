@@ -13,17 +13,23 @@ layout: testpage
 
 {% capture temptags %}
   {% for tag in site.tags %}
-    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
+    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }} <br>
   {% endfor %}
 {% endcapture %}
 
-{{ temptags }}
+{{ temptags }} <br><br>
 
 {% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
 
-{{ sortedtemptags }}
+{{ sortedtemptags | join:'|' }} <br><br>
 
-
+{% for tag in site.tags %}
+  {% for post in site.tags[tag[0]] %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+      {{ post.description }}
+    </li>
+  {% endfor %}
+{% endfor %}
 
 <h1> Posts </h1>
 
