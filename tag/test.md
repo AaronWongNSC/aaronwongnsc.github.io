@@ -7,10 +7,17 @@ layout: testpage
 {{ site.time }} <br><br>
 
 {% for tag in site.tags %}
-  Tag: {{ tag[0] }} <br><br>
+  Tag: {{ tag[0] }} <br>
   Tag Size: {{ tag[1].size }} <br><br>
 {% endfor %}
 
+{% capture temptags %}
+  {% for tag in site.tags %}
+    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
+  {% endfor %}
+{% endcapture %}
+
+{{ temptags }}
 
 <h1> Posts </h1>
 
