@@ -2,14 +2,14 @@
 layout: testpage
 ---
 
-Some text here.
+Some text here. <br><br>
 
 <div class="post">
 
 {{ site.time }}
 
 {% for page in site.pages %}
-Page: {{site.page}}
+Page: {{page}} <br>
 {% endfor %}
 
 </div>
