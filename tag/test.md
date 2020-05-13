@@ -24,7 +24,8 @@ layout: testpage
 {{ sortedtemptags | join:'|' }} <br><br>
 
 {% for tag in site.tags %}
-  {% for post in site.tags[tag[0]] %}
+  {% capture this_tag}{{tag[0]}}{% endcapture %}
+  {% for post in site.tags[this_tag] %}
     <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
       {{ post.description }}
     </li>
