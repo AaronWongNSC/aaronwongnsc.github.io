@@ -9,7 +9,11 @@ Some text here. <br><br>
 {{ site.time }} <br><br>
 
 {% for page in site.pages %}
-Page: {{page}} <br>
+Page: {{page.title}} <br>
+Tags: {{page.tag}} <br>
+Category: {{page.category}}
+
+<br><br>
 {% endfor %}
 
 </div>
