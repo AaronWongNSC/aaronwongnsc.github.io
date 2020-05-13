@@ -7,7 +7,7 @@ layout: testpage
 {{ site.time }} <br><br>
 
 {% for tag in site.tags %}
-  Tag: {{ tag[1] }} <br><br>
+  Tag: {{ tag[1].size }} <br><br>
 {% endfor %}
 
 
