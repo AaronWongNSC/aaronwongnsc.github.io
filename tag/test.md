@@ -6,8 +6,10 @@ Some text here.
 
 <div class="post">
 
-{% for tags in site.tags %}
-  {{ tags }} <br>
+{{ site.time }}
+
+{% for page in site.pages %}
+Page: {{site.page}}
 {% endfor %}
 
 </div>
