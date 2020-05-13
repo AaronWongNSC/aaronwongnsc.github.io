@@ -10,7 +10,8 @@ layout: testpage
 
 {% for page in site.pages %}
   Page: {{page.title}} <br>
-  Tags: {{page.tag}} <br>
+  Tag: {{page.tag}} <br>
+  Tags: {{page.tags}} <br>
   Category: {{page.category}}
   <br><br>
 {% endfor %}
@@ -19,7 +20,8 @@ layout: testpage
 
 {% for post in site.posts %}
   Page: {{post.title}} <br>
-  Tags: {{post.tag}} <br>
+  Tag: {{post.tag}} <br>
+  Tags: {{post.tags}} <br>
   Category: {{post.category}}
   <br><br>
 {% endfor %}
