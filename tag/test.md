@@ -25,8 +25,9 @@ layout: testpage
 
 {% for tag in site.tags %}
   {% capture this_tag%}{{ tag[0] }}{% endcapture %}
-  {{ this_tag }}
-  {% for post in site.tags[tag[0]] %}
+  {{ this_tag }} <br>
+  {{ site.tags[0] }} <br><br>
+  {% for post in site.tags[tag] %}
     <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
       {{ post.description }}
     </li>
