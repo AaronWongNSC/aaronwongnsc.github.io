@@ -1,7 +1,7 @@
 ---
 layout: post
 title: First R Markdown File
-tags: R RMarkdown LaTeX statistics
+tags: R RMarkdown LaTeX statistics projects
 category: code
 published: True
 ---
