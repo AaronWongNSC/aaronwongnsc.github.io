@@ -1,6 +1,9 @@
 ---
 layout: tagpage
 ---
+
+Some text here.
+
 <div class="post">
 
 {% for tags in site.tags %}
@@ -8,3 +11,5 @@ layout: tagpage
 {% endfor %}
 
 </div>
+
+More text here.
