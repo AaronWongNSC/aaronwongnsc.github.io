@@ -19,7 +19,6 @@ Number of pages: {{ site.pages.size }} <br><br>
 <h4> Posts </h4>
 {% for post in site.posts %}
   Title: {{ post.title }} <br>
-  Name: {{ post.name }} <br>
   URL: {{ post.url }} <br>
   Tags: {{ post.tags }} <br>
 {% endfor %}
