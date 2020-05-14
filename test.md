@@ -25,6 +25,7 @@ Number of posts: {{ site.posts.size }} <br><br>
   Title: {{ post.title }} <br>
   URL: {{ post.url }} <br>
   Tags: {{ post.tags }} <br>
+  Category: {{ post.category }} <br>
 {% endfor %}
 
 <h4>Tags</h4>
@@ -74,7 +75,7 @@ site.tags: {{ site.tags }} <br>
 
 {% capture temptags %}
   {% for tag in site.tags %}
-    {{ tag[0] }}#{{ tag[1].size }}
+    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
   {% endfor %}
 {% endcapture %}
 {% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
@@ -85,9 +86,9 @@ sortedtemptags, split: {{ sortedtemptags | split:'|'}} <br>
 {% for temptag in sortedtemptags %}
   {% assign tagitems = temptag | split: '#' %}
 tagitems: {{ tagitems }} <br>
-  {% capture tagname %}{{ tagitems[0] }}{% endcapture %}
+  {% capture tagname %}{{ tagitems[1] }}{% endcapture %}
 tagname: {{ tagname }} <br>
-  [<a href="/tag/{{ tagname }}">{{ tagname }}--{{ tagitems[1] }}</a>]
+  [<a href="/tag/{{ tagname }}">{{ tagname }}--{{ tagitems[2] }}</a>]
 {% endfor %}
 
 
@@ -104,3 +105,14 @@ tagname: {{ tagname }} <br>
   {% endfor %}
   </ul>
 {% endfor %}
+
+<h4>Category Code</h4>
+
+{% assign rawcats = "" %}
+{% for post in site.posts %}
+  {% assign tcats = post.category | join:'.' | append:'|' %}
+tcats: {{ tcats }}
+  {% assign rawcats = rawcats | append:tcats %}
+rawcats: {{ rawcats }}
+{% endfor %}
+{% assign rawtags = rawtags | split:'|' | sort %}
