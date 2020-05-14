@@ -10,6 +10,7 @@ site.time (time site was processed): {{ site.time }} <br><br>
 {% for page in site.pages %}
   Title: {{ page.title }} <br>
   URL: {{ page.url }} <br>
+  Content: {{ page.content }} <br>
 {% endfor %}
 
 <h4> Other Stuff </h4>
