@@ -110,10 +110,10 @@ tagname: {{ tagname }} <br>
 
 {% assign rawcats = "" %}
 {% for post in site.posts %}
-  {% assign tcats = post.category | join:'.' | append:'|' %}
+  {% assign tcats = post.category | replace: ' ', '.' | append:'|' %}
 tcats: {{ tcats | replace: '|', '\|'}} <br>
   {% assign rawcats = rawcats | append:tcats %}
-rawcats: {{ rawcats }} <br>
+rawcats: {{ rawcats | replace: '|', '\|'}} <br>
 {% endfor %}
 
 rawcats: {{ rawcats }} <br>
