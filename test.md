@@ -51,18 +51,14 @@ Number of tags: {{ site.tags.size }} <br><br>
 
 temptags: {{ temptags }} <br><br>
 
-{% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
-
-{{ sortedtemptags | join:'|' }} <br><br>
-
-<ul>
 {% for tag in site.tags %}
   {% capture this_tag%}{{ tag[0] }}{% endcapture %}
   {{ this_tag }}
+  <ul>
   {% for post in site.tags[this_tag] %}
     <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
       {{ post.description }}
     </li>
   {% endfor %}
+  </ul>
 {% endfor %}
-</ul>
