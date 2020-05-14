@@ -7,6 +7,9 @@ layout: blank
 site.time (time site was processed): {{ site.time }} <br><br>
 
 <h4> Pages </h4>
+
+Number of pages: {{ site.pages.size }} <br><br>
+
 {% for page in site.pages %}
   Title: {{ page.title }} <br>
   Name: {{ page.name }} <br>
