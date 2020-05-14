@@ -41,15 +41,32 @@ Number of tags: {{ site.tags.size }} <br><br>
   {% endfor %}
 {% endfor %}
 
+<h4> Tag Code </h4>
+
+{% assign rawtags = "" %}
+{% for post in site.posts %}
+  {% assign ttags = post.tags | join:'|' | append:'|' %}
+ttags: {{ ttags }} <br>
+  {% assign rawtags = rawtags | append:ttags %}
+rawtags: {{ rawtags}} <br>
+{% endfor %}
+{% assign rawtags = rawtags | split:'|' | sort %}
+rawtags, split and sorted: {{ rawtags }} <br>
+
+{% assign site.tags = "" %}
+{% for tag in rawtags %}
+  {% if tag != "" %}
+    {% if tags == "" %}
+      {% assign tags = tag | split:'|' %}
+    {% endif %}
+    {% unless tags contains tag %}
+      {% assign tags = tags | join:'|' | append:'|' | append:tag | split:'|' %}
+    {% endunless %}
+  {% endif %}
+{% endfor %}
+
+
 <h4>Other</h4>
-
-{% capture temptags %}
-  {% for tag in site.tags %}
-    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
-  {% endfor %}
-{% endcapture %}
-
-temptags: {{ temptags }} <br><br>
 
 {% for tag in site.tags %}
   {% capture this_tag%}{{ tag[0] }}{% endcapture %}
