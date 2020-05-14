@@ -11,7 +11,17 @@ site.time (time site was processed): {{ site.time }} <br><br>
   Title: {{ page.title }} <br>
   Name: {{ page.name }} <br>
   URL: {{ page.url }} <br>
+  Tag: {{ page.tag }} <br>
   Tags: {{ page.tags }} <br>
+{% endfor %}
+
+<h4> Posts </h4>
+{% for posts in site.posts %}
+  Title: {{ post.title }} <br>
+  Name: {{ post.name }} <br>
+  URL: {{ post.url }} <br>
+  Tag: {{ post.tag }} <br>
+  Tags: {{ post.tags }} <br>
 {% endfor %}
 
 <h4> Other Stuff </h4>
