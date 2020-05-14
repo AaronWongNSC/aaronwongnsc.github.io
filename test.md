@@ -51,7 +51,7 @@ ttags: {{ ttags }} <br>
 rawtags: {{ rawtags}} <br>
 {% endfor %}
 {% assign rawtags = rawtags | split:'|' | sort %}
-rawtags, split and sorted: {{ rawtags }} <br>
+rawtags, split and sorted: {{ rawtags | split:'|' }} <br>
 
 {% assign site.tags = "" %}
 {% for tag in rawtags %}
