@@ -1,15 +1,22 @@
 ---
 layout: post
 title: Playing With Categories and Minor Updates
-tags: Jekyll
+tags: Jekyll Liquid LaTeX
 category: code
 published: True
 ---
 
-I spent about an hour trying to work through the details of the tag cloud code to think about how I would like to do that with categories. Tye primary difference with the categories is that I want to be able to have it sort out into sub-categories. For example, if I have the category as ```learning Data_Science_from_Scratch```, I want the page that shows the posts in the ```learning``` category to have all the ```Data_Science_from_Scratch``` posts grouped together.
+I spent another hour or so wrapping my mind around programming under Jekyll. The good news is that I have a much richer understanding of how it works and the various variables that are floating around the system. The bad news is that I didn't really get any further in how I wanted the category pages to look.
 
-This is not conceptually difficult, but I found myself struggling a bit with getting the right variable names. Some of the times I thought I was trying to get just a tag, I ended up getting another full copy of the blog inside of the blog. So there's some sort of conceptual gap that I'm fighting with where I don't quite have it clear in my head what variables are what. This is one of the downsides of starting with the basic blog page instead of starting from scratch and building the pages through GitHub instead of on my computer, first.
+I created a blank page layout, which allows me to create what is basically a straight HTML page:
 
-I think I can figure it out with just a little bit more time. So I'll probably come back to that in another couple days and think about it some more.
+```
+<!DOCTYPE html>
+{{ content }}
+```
 
-In the meantime, I've adjusted the padding on the sides of the page because it felt a little too squished on my smaller monitor. I've also adjusted the pagination to be 7 posts per page. I will probably have to do something about the "Previous Posts" to limit them to maybe 10-15 posts and call it "Recent Posts" instead. But I can already see this space getting crowded and that I should probably want to get the categories to work to help with organization. At some point, I'm probably going to want to also have a page for projects or something.
+I haven't yet figured out the best way to create new pages through Jekyll. I tried putting just a regular HTML file into the folder, but it didn't show up on the website. But it looks like this will let me take a markdown page and just have it translate (basically) into HTML for me. I am a little worried that bits of text may fall under the spell of the markdown encoder, but I could be wrong. I haven't tried to do anything substantial with that yet, but at some point I'm going to want to build some webpages to house my various projects.
+
+I created a [test page](https://aaronwongnsc.github.io/test/) for me to play with the Liquid code. So far, everything is processing the way I expect it to, but every now and then something behaves differently than I think it should. Some of that is markdown taking over the symbols that are being used in the Liquid code, and sometimes it's because I don't know exactly what a variable is (and sometimes end up with whole webpages as a result).
+
+One other small change I made to the default layout was to add code that [allows the markdown to process LaTeX into math symbols](http://www.iangoodfellow.com/blog/jekyll/markdown/tex/2016/11/07/latex-in-markdown.html). I just shoved that into the header because I wasn't sure where it should go. Intuitively, it makes more sense to me for that to be part of the header than the footer. I don't really intend to make complex LaTeX typesetting for the web, so it's not going to be that big of a deal.
