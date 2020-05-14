@@ -6,6 +6,14 @@ layout: blank
 
 site.time (time site was processed): {{ site.time }} <br><br>
 
+<h4> Pages </h4>
+{% for page in site.pages %}
+  Title: {{ page.title }} <br>
+  URL: {{ page.url }} <br>
+{% endfor %}
+
+<h4> Other Stuff </h4>
+
 {% for tag in site.tags %}
   Tag: {{ tag[0] }} <br>
   Tag Size: {{ tag[1].size }} <br><br>
