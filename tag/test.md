@@ -2,11 +2,11 @@
 layout: blank
 ---
 
-<h4> Site Variables </h4>
+<h4>Site Variables</h4>
 
 site.time (time site was processed): {{ site.time }} <br><br>
 
-<h4> Pages </h4>
+<h4>Pages</h4>
 
 Number of pages: {{ site.pages.size }} <br><br>
 
@@ -16,19 +16,27 @@ Number of pages: {{ site.pages.size }} <br><br>
   URL: {{ page.url }} <br>
 {% endfor %}
 
-<h4> Posts </h4>
+
+<h4>Posts</h4>
+
+Number of posts: {{ site.posts.size }} <br><br>
+
 {% for post in site.posts %}
   Title: {{ post.title }} <br>
   URL: {{ post.url }} <br>
   Tags: {{ post.tags }} <br>
 {% endfor %}
 
-<h4> Other Stuff </h4>
+<h4>Tags</h4>
+
+Number of tags: {{ site.tags.size }} <br><br>
 
 {% for tag in site.tags %}
   Tag: {{ tag[0] }} <br>
   Tag Size: {{ tag[1].size }} <br><br>
 {% endfor %}
+
+<h4>Other</h4>
 
 {% capture temptags %}
   {% for tag in site.tags %}
@@ -36,7 +44,7 @@ Number of pages: {{ site.pages.size }} <br><br>
   {% endfor %}
 {% endcapture %}
 
-{{ temptags }} <br><br>
+temptags: {{ temptags }} <br><br>
 
 {% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
 
