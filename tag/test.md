@@ -16,7 +16,7 @@ site.time (time site was processed): {{ site.time }} <br><br>
 {% endfor %}
 
 <h4> Posts </h4>
-{% for posts in site.posts %}
+{% for post in site.posts %}
   Title: {{ post.title }} <br>
   Name: {{ post.name }} <br>
   URL: {{ post.url }} <br>
