@@ -111,8 +111,8 @@ tagname: {{ tagname }} <br>
 {% assign rawcats = "" %}
 {% for post in site.posts %}
   {% assign tcats = post.category | join:'.' | append:'|' %}
-tcats: {{ tcats }}
+tcats: {{ tcats }} <br>
   {% assign rawcats = rawcats | append:tcats %}
-rawcats: {{ rawcats }}
+rawcats: {{ rawcats }} <br>
 {% endfor %}
 {% assign rawtags = rawtags | split:'|' | sort %}
