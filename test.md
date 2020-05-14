@@ -59,12 +59,11 @@ tag: {{ tag }} <br>
   {% if tag != "" %}
     {% if tags == "" %}
       {% assign tags = tag | split:'|' %}
-tags: {{ tags }} <br>
     {% endif %}
     {% unless tags contains tag %}
       {% assign tags = tags | join:'|' | append:'|' | append:tag | split:'|' %}
-      tags: {{ tags }} <br>
     {% endunless %}
+tags: {{ tags | split:'|' }} <br>
   {% endif %}
 {% endfor %}
 
