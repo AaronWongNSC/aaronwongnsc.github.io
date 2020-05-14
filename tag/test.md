@@ -33,7 +33,8 @@ Number of tags: {{ site.tags.size }} <br><br>
 
 {% for tag in site.tags %}
   Tag: {{ tag[0] }} <br>
-  Tag Size: {{ tag[1].size }} <br><br>
+  Tag Size: {{ tag[1].size }} <br>
+  Tag[1]: {{ tag[1] }} <br><br>
 {% endfor %}
 
 <h4>Other</h4>
