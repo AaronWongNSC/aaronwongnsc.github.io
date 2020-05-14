@@ -115,4 +115,9 @@ tcats: {{ tcats }} <br>
   {% assign rawcats = rawcats | append:tcats %}
 rawcats: {{ rawcats }} <br>
 {% endfor %}
-{% assign rawtags = rawtags | split:'|' | sort %}
+
+rawcats: {{ rawcats }} <br>
+{% assign rawcats = rawcats | split:'|' | sort %}
+
+rawcats, split and sorted: {{ rawcats }} <br>
+rawcats, split and sorted, split: {{ rawcats | split:'|' }} <br>
