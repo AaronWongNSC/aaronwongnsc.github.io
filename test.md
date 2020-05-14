@@ -63,6 +63,7 @@ tags: {{ tags }} <br>
     {% endif %}
     {% unless tags contains tag %}
       {% assign tags = tags | join:'|' | append:'|' | append:tag | split:'|' %}
+      tags: {{ tags }} <br>
     {% endunless %}
   {% endif %}
 {% endfor %}
