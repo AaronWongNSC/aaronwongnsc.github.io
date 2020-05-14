@@ -1,5 +1,5 @@
 ---
-layout: testpage
+layout: blank
 ---
 
 <div class="post">
@@ -25,8 +25,7 @@ layout: testpage
 
 {% for tag in site.tags %}
   {% capture this_tag%}{{ tag[0] }}{% endcapture %}
-  {{ this_tag }} <br>
-  {{ site.tags[0] }} <br><br>
+  {{ this_tag }}
   {% for post in site.tags[this_tag] %}
     <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
       {{ post.description }}
