@@ -68,6 +68,11 @@ tags: {{ tags | split:'|' }} <br>
 {% endfor %}
 site.tags: {{ site.tags }} <br>
 
+{% for tag in site.tags %}
+  {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
+{% endfor %}
+
+
 <h4>Other</h4>
 
 {% for tag in site.tags %}
