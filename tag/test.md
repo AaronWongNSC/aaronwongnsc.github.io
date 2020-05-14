@@ -11,8 +11,6 @@ site.time (time site was processed): {{ site.time }} <br><br>
   Title: {{ page.title }} <br>
   Name: {{ page.name }} <br>
   URL: {{ page.url }} <br>
-  Tag: {{ page.tag }} <br>
-  Tags: {{ page.tags }} <br>
 {% endfor %}
 
 <h4> Posts </h4>
@@ -20,7 +18,6 @@ site.time (time site was processed): {{ site.time }} <br><br>
   Title: {{ post.title }} <br>
   Name: {{ post.name }} <br>
   URL: {{ post.url }} <br>
-  Tag: {{ post.tag }} <br>
   Tags: {{ post.tags }} <br>
 {% endfor %}
 
@@ -43,6 +40,7 @@ site.time (time site was processed): {{ site.time }} <br><br>
 
 {{ sortedtemptags | join:'|' }} <br><br>
 
+<ul>
 {% for tag in site.tags %}
   {% capture this_tag%}{{ tag[0] }}{% endcapture %}
   {{ this_tag }}
@@ -52,14 +50,4 @@ site.time (time site was processed): {{ site.time }} <br><br>
     </li>
   {% endfor %}
 {% endfor %}
-
-<h1> Posts </h1>
-
-{% for post in site.posts %}
-  Page: {{ post.title }} <br>
-  Tags: {{ post.tags | join:'|' }} <br>
-  Size of Tags: {{ post.tags.size }} <br>
-  Category: {{ post.category }} <br>
-  URL: {{ post.url }} <br>
-  <br><br>
-{% endfor %}
+</ul>
