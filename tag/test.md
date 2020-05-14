@@ -9,8 +9,9 @@ site.time (time site was processed): {{ site.time }} <br><br>
 <h4> Pages </h4>
 {% for page in site.pages %}
   Title: {{ page.title }} <br>
+  Name: {{ page.name }} <br>
   URL: {{ page.url }} <br>
-  Content: {{ page.content }} <br>
+  Tags: {{ page.tags }} <br>
 {% endfor %}
 
 <h4> Other Stuff </h4>
