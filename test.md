@@ -35,9 +35,9 @@ Number of tags: {{ site.tags.size }} <br><br>
   Tag: {{ tag[0] }} <br>
   Tag Size: {{ tag[1].size }} <br>
   {% for post in tag[1] %}
-    Title: {{ post.title }} <br>
-    URL: {{ post.url }} <br>
-    Tags: {{ post.tags }} <br>
+  Title: {{ post.title }} <br>
+  URL: {{ post.url }} <br>
+  Tags: {{ post.tags }} <br>
   {% endfor %}
 {% endfor %}
 
