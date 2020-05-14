@@ -72,6 +72,13 @@ site.tags: {{ site.tags }} <br>
   {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
 {% endfor %}
 
+{% capture temptags %}
+  {% for tag in site.tags %}
+    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
+  {% endfor %}
+{% endcapture %}
+{% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
+
 {{ sortedtemptags }} <br>
 
 
