@@ -10,4 +10,4 @@ This chapter is a super-brief introduction to probability. It's a lot like the p
 
 ## Dependence and Independence
 
-The main point here is that there is a computational method to know whether events are dependent or independent. Simply check if $P(E,F) = P(E) P(F)$.
+The main point here is that there is a computational method to know whether events are dependent or independent. Simply check if $$P(E,F) = P(E) P(F)$$.
