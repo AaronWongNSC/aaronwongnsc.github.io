@@ -79,9 +79,16 @@ site.tags: {{ site.tags }} <br>
 {% endcapture %}
 {% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
 
-{{ sortedtemptags }} <br>
+sortedtemptags: {{ sortedtemptags }} <br>
+sortedtemptags, split: {{ sortedtemptags | split:'|'}} <br>
 
-
+{% for temptag in sortedtemptags %}
+  {% assign tagitems = temptag | split: '#' %}
+tagitems: {{ tagitems }} <br>
+  {% capture tagname %}{{ tagitems[1] }}{% endcapture %}
+tagname: {{ tagname }} <br>
+  [<a href="/tag/{{ tagname }}">{{ tagname }}--{{ tagitems[2] }}</a>]
+{% endfor %}
 
 
 <h4>Other</h4>
