@@ -66,7 +66,7 @@ tag: {{ tag }} <br>
 tags: {{ tags | split:'|' }} <br>
   {% endif %}
 {% endfor %}
-
+site.tags: {{ site.tags }} <br>
 
 <h4>Other</h4>
 
