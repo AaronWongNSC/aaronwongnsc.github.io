@@ -2,15 +2,9 @@
 layout: blank
 ---
 
-<h4> Site Variables </h4>
+<div class="post">
 
-site.time (time site was processed): {{ site.time }} <br><br>
-site.pages: {{ site.pages }} <br><br>
-site.posts: {{ site.posts }} <br><br>
-site.static_files: {{ site.static_files }} <br><br>
-
-<h4> Site Variables </h4>
-
+{{ site.time }} <br><br>
 
 {% for tag in site.tags %}
   Tag: {{ tag[0] }} <br>
@@ -49,3 +43,5 @@ site.static_files: {{ site.static_files }} <br><br>
   URL: {{ post.url }} <br>
   <br><br>
 {% endfor %}
+
+</div>
