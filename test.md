@@ -74,7 +74,7 @@ site.tags: {{ site.tags }} <br>
 
 {% capture temptags %}
   {% for tag in site.tags %}
-    {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
+    {{ tag[0] }}#{{ tag[1].size }}
   {% endfor %}
 {% endcapture %}
 {% assign sortedtemptags = temptags | split:' ' | sort | reverse %}
@@ -85,9 +85,9 @@ sortedtemptags, split: {{ sortedtemptags | split:'|'}} <br>
 {% for temptag in sortedtemptags %}
   {% assign tagitems = temptag | split: '#' %}
 tagitems: {{ tagitems }} <br>
-  {% capture tagname %}{{ tagitems[1] }}{% endcapture %}
+  {% capture tagname %}{{ tagitems[0] }}{% endcapture %}
 tagname: {{ tagname }} <br>
-  [<a href="/tag/{{ tagname }}">{{ tagname }}--{{ tagitems[2] }}</a>]
+  [<a href="/tag/{{ tagname }}">{{ tagname }}--{{ tagitems[1] }}</a>]
 {% endfor %}
 
 
