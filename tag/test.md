@@ -4,10 +4,12 @@ layout: blank
 
 <h4> Site Variables </h4>
 
-site.time: {{ site.time }} <br><br>
+site.time (time site was processed): {{ site.time }} <br><br>
 site.pages: {{ site.pages }} <br><br>
 site.posts: {{ site.posts }} <br><br>
 site.static_files: {{ site.static_files }} <br><br>
+
+<h4> Site Variables </h4>
 
 
 {% for tag in site.tags %}
