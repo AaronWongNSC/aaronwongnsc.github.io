@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Playing With Categories and Minor Updates
+title: More Playing With Categories
 tags: Jekyll Liquid LaTeX
 category: code
 published: True
