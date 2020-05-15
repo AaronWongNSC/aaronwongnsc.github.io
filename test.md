@@ -54,8 +54,6 @@ rawtags: {{ rawtags}} <br>
 {% assign rawtags = rawtags | split:'|' | sort %}
 rawtags, split and sorted: {{ rawtags | split:'|' }} <br>
 
-{% assign site.tags = "" %}
-site.tags: {{ site.tags }} <br>
 {% for tag in rawtags %}
 tag: {{ tag }} <br>
   {% if tag != "" %}
@@ -122,3 +120,5 @@ rawcats: {{ rawcats }} <br>
 
 rawcats, split and sorted: {{ rawcats }} <br>
 rawcats, split and sorted, split: {{ rawcats | split:'|' }} <br>
+
+site.categories: {{ site.categories }}
