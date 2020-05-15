@@ -12,8 +12,12 @@ I created a blank page layout, which allows me to create what is basically a str
 
 ```
 <!DOCTYPE html>
+{% raw %}
 {{ content }}
+{% endraw %}
 ```
+
+(Ironically, I needed to add extra Liquid code to make that display properly.)
 
 I haven't yet figured out the best way to create new pages through Jekyll. I tried putting just a regular HTML file into the main folder, but it didn't show up on the website. However, if I put it inside of some other folder, it works just fine. So maybe that's just something I'll have to do. I am a little worried that bits of text may fall under the spell of the markdown encoder, but I could be wrong about whether it will do that. For playing with the Jekyll/Liquid stuff, this blank layout lets me try things, but if I wanted to actually build an HTML page directly, I would just have to dump it into a folder, and then it can be directly accessed as a [file](https://aaronwongnsc.github.io/files/webtest.html).
 
