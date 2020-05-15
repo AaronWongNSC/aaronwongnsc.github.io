@@ -55,6 +55,7 @@ rawtags: {{ rawtags}} <br>
 rawtags, split and sorted: {{ rawtags | split:'|' }} <br>
 
 {% assign site.tags = "" %}
+site.tags: {{ site.tags }} <br>
 {% for tag in rawtags %}
 tag: {{ tag }} <br>
   {% if tag != "" %}
