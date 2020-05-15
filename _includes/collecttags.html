@@ -5,7 +5,6 @@
 {% endfor %}
 {% assign rawtags = rawtags | split:'|' | sort %}
 
-
 {% for tag in rawtags %}
   {% if tag != "" %}
     {% if tags == "" %}
