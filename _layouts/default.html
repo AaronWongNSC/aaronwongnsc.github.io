@@ -45,8 +45,8 @@
         {{ content }}
       </div>
       <div id="sidebar" role="sidebar" class="right_container">
-        <h3>Previous Posts</h3>
-        {% for post in site.posts %}
+        <h3>Recent Posts</h3>
+        {% for post in site.posts limit:10 %}
           <article class="post">
             <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
             <div class="date">
