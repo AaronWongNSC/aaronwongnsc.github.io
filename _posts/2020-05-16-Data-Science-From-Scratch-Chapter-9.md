@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Data Science from Scratch -- Chapter 8
+title: Data Science from Scratch -- Chapter 9
 tags: books Python Data_Science_from_Scratch
 category: learning books Data_Science_from_Scratch
 published: True
