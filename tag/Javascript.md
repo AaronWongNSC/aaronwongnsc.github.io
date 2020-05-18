@@ -1,5 +1,5 @@
 ---
 layout: tagpage
-title: "Tag: Javascript"
-tag: Javascript
+title: "Tag: JavaScript"
+tag: JavaScript
 ---

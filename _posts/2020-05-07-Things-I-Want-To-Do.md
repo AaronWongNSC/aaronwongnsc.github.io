@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Things I Want to Do
-tags: blog overview books websites Javascript R Python
+tags: blog overview books websites JavaScript R Python
 category: general
 published: True
 ---
