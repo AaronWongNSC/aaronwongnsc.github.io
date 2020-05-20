@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Starting Into JavaScript and d3
+title: First d3 Project
 tags: JavaScript d3 projects
 category: learning
 published: True
