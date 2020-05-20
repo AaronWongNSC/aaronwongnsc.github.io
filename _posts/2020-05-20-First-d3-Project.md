@@ -227,3 +227,7 @@ var selector = d3.selectAll("select")
       .call(yAxis);
   });
 ```
+
+## Closing Thoughts
+
+Having worked through this example, it doesn't feel as though other applications like this would be that far off. I may take another day or two and do something with the New York Times coronavirus data. We'll see how quickly the other stuff comes along.
