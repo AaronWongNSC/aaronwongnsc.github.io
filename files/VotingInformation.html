@@ -27,7 +27,7 @@
 
 <div align="center">
 <select id="cat" class="dropdown"></select>
-<select id="year" class="dropdown""></select>
+<select id="year" class="dropdown"></select>
 </div>
 
 <script>
@@ -144,7 +144,7 @@ d3.tsv("VotingInformation.tsv", function(d) {
 		.text( function (d, i) { return get_values( state_values, sel_year, sel_cat )[i]; } );
 
 	// Enable updates
-	var selector = d3.selectAll("select")
+	d3.selectAll("select")
 		.on("change", function(d)
 		{
 			cat = document.getElementById("cat");
