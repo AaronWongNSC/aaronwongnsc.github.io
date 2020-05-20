@@ -1,0 +1,178 @@
+<!doctype HTML>
+<head>
+<style>
+
+.rectangle {
+	fill: steelblue;
+}
+.rectangle:hover {
+	fill: orange;
+}
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+</style>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+</head>
+<body>
+
+<div align="center">
+<select id="cat" class="dropdown"></select>
+<select id="year" class="dropdown""></select>
+</div>
+
+<script>
+d3.tsv("VotingInformation.tsv", function(d) {
+
+	function get_values(state_values, year, cat)
+	{
+		var values = []
+		for ( i = 0; i < state_values.length; i++ )
+		{
+			values.push( Number(state_values[i].filter( function(d) { return d.Year == year; } )[0][cat]) ) ;
+		};
+		return values;
+	};
+
+	// Set up variables
+	var width = 1000;
+	var height = 500;
+	var margin = { left: 50, right: 50, top: 50, bottom: 100 };
+
+	var disp_height = height - margin.top - margin.bottom;
+	var disp_width = width - margin.left - margin.right;
+
+	var states = d3.map( d , function (d) { return d.State ; } ).keys();
+	var years = d3.map( d, function (d) { return d.Year ; } ).keys();
+	var categories = Object.keys( d[0] )
+		.filter( function(d) { return (( d != "Year" ) & (d != "State")) } );
+
+	var sel_year = years[0];
+	var sel_cat = categories[0];
+
+	var state_values = [];
+
+	for ( i = 0; i < states.length; i++ )
+	{
+		state_values.push( d.filter( function(d) { return d.State == states[i]; } ) )
+	};
+
+	var x = d3.scale.ordinal()
+		.domain( states )
+		.rangeBands([0, disp_width]);
+
+	var y = d3.scale.linear()
+		.domain( [0, d3.max( get_values( state_values, sel_year, sel_cat ) ) ] )
+		.range([disp_height,0]);
+
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient("left");
+
+	// Set up svg
+	var svg = d3.select("body").append("svg")
+		.attr("width", width)
+		.attr("height", height)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")" );
+
+	// Draw x and y axes
+	svg.append("g")
+		.attr("id", "x_axis")
+		.attr("class", "axis")
+		.attr("transform", "translate(0," + disp_height + ")")
+		.call(xAxis)
+		.selectAll("text")
+		.style("font-size", "8px")
+		.style("text-anchor", "end")
+		.attr("dx", "-.8em")
+		.attr("dy", "-.55em")
+		.attr("transform", "rotate(-90)" );
+
+ 	svg.append("g")
+		.attr("id", "y_axis")
+	    	.attr("class", "axis")
+    		.call(yAxis);
+
+	// Set up rectangles for the graph
+	var bar = d3.select("g").selectAll("rect")
+		.data(state_values)
+		.enter()
+		.append("rect")
+		.attr("class","rectangle")
+		.attr("id", function(d, i) { return states[i]; } )
+		.attr("width", disp_width / states.length)
+		.attr("x", function(d, i) { return ( disp_width / states.length) * i ; } )
+
+	// Fill out drop-down menus
+	d3.select("#cat").selectAll("option")
+		.data(categories)
+		.enter()
+		.append("option")
+		.attr("value", function(d) { return d; } )
+		.text( function(d) { return d; } ) ;
+
+	d3.select("#year").selectAll("option")
+		.data(years)
+		.enter()
+		.append("option")
+		.attr("value", function(d) { return d; } )
+		.text( function(d) { return d; } ) ;
+
+	// Initial Graph
+	svg.selectAll(".rectangle")
+		.attr("height", function(d){
+			return disp_height - y(+d.filter( function(d) { return d.Year == sel_year } )[0][sel_cat]) ;
+		} )
+		.attr("y", function(d){
+			return y(+d.filter( function(d) { return d.Year == sel_year } )[0][sel_cat]) ;
+		} )
+		.append("title")
+		.text( function (d, i) { return get_values( state_values, sel_year, sel_cat )[i]; } );
+
+	// Enable updates
+	var selector = d3.selectAll("select")
+		.on("change", function(d)
+		{
+			cat = document.getElementById("cat");
+			year = document.getElementById("year");
+			var sel_cat = cat.value;
+			var sel_year = year.value;
+
+			y.domain( [0, d3.max( get_values( state_values, sel_year, sel_cat ) ) ] );
+
+			d3.selectAll(".rectangle")
+				.transition()
+				.attr("height", function(d){
+					return disp_height - y(+d.filter( function(d) { return d.Year == sel_year } )[0][sel_cat]) ;
+				} )
+				.attr("y", function(d){
+					return y(+d.filter( function(d) { return d.Year == sel_year } )[0][sel_cat]) ;
+				} )
+				.select("title")
+				.text( function (d, i) { return get_values( state_values, sel_year, sel_cat )[i]; } );
+				;
+
+			d3.select("#y_axis")
+				.transition()
+				.call(yAxis);
+		});
+
+
+} );
+</script>
+</body>
+</html>
