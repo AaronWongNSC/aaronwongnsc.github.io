@@ -14,7 +14,7 @@ In the discussion below, the code has been grouped conceptually, rather than put
 
 I do not know whether this is common (it seems to be from what I've seen so far), but the way the webpage was built was to start with a nearly empty HTML page and then fill in the parts using d3. So the basic HTML page looked like this:
 
-```
+```js
 <html>
 <head>
 <style>
@@ -28,7 +28,7 @@ I do not know whether this is common (it seems to be from what I've seen so far)
 
 <div align="center">
 <select id="cat" class="dropdown"></select>
-<select id="year" class="dropdown""></select>
+<select id="year" class="dropdown"></select>
 </div>
 
 <script>

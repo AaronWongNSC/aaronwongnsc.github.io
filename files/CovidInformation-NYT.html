@@ -25,9 +25,15 @@
 </head>
 <body>
 
-<div align="center">
-<select id="state" class="dropdown"></select>
-<select id="county" class="dropdown"></select>
+<div id="location" align="center">
+	<select id="state" class="dropdown"></select>
+	<select id="county" class="dropdown"></select>
+</div>
+
+<div id="facts" align="center">
+	<div id="first"></div>
+	<div id="cases"></div>
+	<div id="deaths"></div>
 </div>
 
 <script>
@@ -82,9 +88,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 			var sel_state = my_state.value;
 			var sel_county = my_county.value;
 
-			console.log( sel_state );
-			console.log( sel_county );
-			console.log( all_data.filter( function(d) { return (d.state == sel_state && d.county == sel_county) ; } ) );
+			var county_data = all_data.filter( function(d) { return (d.state == sel_state && d.county == sel_county) ; } );
 		});
 
 
