@@ -27,12 +27,12 @@
 
 <div align="center">
 <select id="state" class="dropdown"></select>
-<select id="county" class="dropdown""></select>
+<select id="county" class="dropdown"></select>
 </div>
 
 <script>
-//d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv", function(d) {
-d3.csv("us-counties.csv", function(d) {
+d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv", function(d) {
+//d3.csv("us-counties.csv", function(d) {
 
 	var all_data = d;
 
@@ -70,7 +70,7 @@ d3.csv("us-counties.csv", function(d) {
 				.enter()
 				.append("option")
 				.attr("value", function(d) { return d; } )
-				.text( function(d) { return d; } ) ;			
+				.text( function(d) { return d; } ) ;
 		});
 
 	d3.select("#county")
