@@ -1,0 +1,98 @@
+<!doctype HTML>
+<head>
+<style>
+
+.rectangle {
+	fill: steelblue;
+}
+.rectangle:hover {
+	fill: orange;
+}
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+</style>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+</head>
+<body>
+
+<div align="center">
+<select id="state" class="dropdown"></select>
+<select id="county" class="dropdown""></select>
+</div>
+
+<script>
+//d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv", function(d) {
+d3.csv("us-counties.csv", function(d) {
+
+	var all_data = d;
+
+	var states = d3.map( d , function (d) { return d.state ; } ).keys().sort(d3.ascending);
+
+	var counties_by_state = [];
+	for ( i = 0; i < states.length; i++ )
+	{
+		counties_by_state.push( d3.map(
+			d.filter( function (d) {return d.state == states[i] ;} ), function(d) {return d.county ;})
+			.keys().sort(d3.ascending) );
+	}
+
+	d3.select("#state").selectAll("option")
+		.data(states)
+		.enter()
+		.append("option")
+		.attr("id", function(d) { return d ; } )
+		.attr("value", function(d) { return d ; } )
+		.text( function(d) { return d ; } ) ;
+
+	d3.select("#state")
+		.on("change", function(d)
+		{
+			my_state = document.getElementById("state");
+			var sel_state = my_state.value;
+
+			var state_index = states.indexOf( sel_state );
+
+			var counties = counties_by_state[state_index];
+
+			d3.select("#county").selectAll("option").remove();
+			d3.select("#county").selectAll("option")
+				.data(counties)
+				.enter()
+				.append("option")
+				.attr("value", function(d) { return d; } )
+				.text( function(d) { return d; } ) ;			
+		});
+
+	d3.select("#county")
+		.on("change", function(d)
+		{
+			my_state = document.getElementById("state");
+			my_county = document.getElementById("county");
+
+			var sel_state = my_state.value;
+			var sel_county = my_county.value;
+
+			console.log( sel_state );
+			console.log( sel_county );
+			console.log( all_data.filter( function(d) { return (d.state == sel_state && d.county == sel_county) ; } ) );
+		});
+
+
+} );
+
+
+
+
+</script>
+</body>
+</html>
