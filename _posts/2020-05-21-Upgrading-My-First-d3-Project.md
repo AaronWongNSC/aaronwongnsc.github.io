@@ -50,3 +50,5 @@ var yAxis = d3.axisLeft()
 The scale commands are now set up differently, and the axis location is part of the function name rather than being a separate paramaeter. It was surprisingly difficult to find good documentation and examples of this, which was somewhat surprising. Perhaps the package is just being updated too quickly for people to really spend a lot of time cleaning it up? I don't know.
 
 Fortunately, that was all that appeared to be different. At least, I don't remember any other changes.
+
+I'm currently in the process of trying to create a COVID visualization using the New York Times dataset. It will likely take me at least another day or two to get the basic code running, and while I'd like to imagine myself caring enough to make it more visually appealing, I'm likely to skip that step.

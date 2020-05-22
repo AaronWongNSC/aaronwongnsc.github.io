@@ -51,7 +51,6 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 	var disp_width = width - margin.left - margin.right;
 
 	// Set up SVG canvas
-
 	var x = d3.scaleTime()
 		.domain([new Date("2020-01-29"), new Date("2020-05-29")])
 		.range([0, disp_width]);
@@ -104,8 +103,51 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.append("option")
 		.attr("id", function(d) { return d ; } )
 		.attr("value", function(d) { return d ; } )
-		.text( function(d) { return d ; } ) ;
+		.text( function(d) { return d ; } )
+		.property("selected", function(d) { return d == "Nevada"});
 
+	counties = counties_by_state[ states.indexOf( "Nevada") ];
+
+	d3.select("#county").selectAll("option")
+		.data(counties)
+		.enter()
+		.append("option")
+		.attr("value", function(d) { return d; } )
+		.text( function(d) { return d; } )
+		.property("selected", function(d) { return d == "Clark"});
+
+	// Draw Initial Graph
+	var state_data = all_data.filter( function(d) { return (d.state == "Nevada") ; } )
+	var county_data = state_data.filter( function(d) { return (d.county == "Clark") ; } );
+	county_data.sort((a,b) => d3.ascending(a.date, b.date));
+
+	x.domain([new Date( d3.min( county_data.date ) ), d3.max( county_data.date )]);
+	y.domain( [0, d3.max( county_data.cases )] )
+
+
+
+	svg.append("path")
+		.datum(county_data)
+		.attr("id", "deaths")
+		.attr("fill", "none")
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 1)
+		.attr("d", d3.line()
+			.x( function(d) { console.log( x(new Date(d.date) ) ) ; return x(new Date(d.date) ); })
+			.y( function(d) { return y( +d.deaths ); })) ;
+
+		svg.append("path")
+			.datum(county_data)
+			.attr("id", "cases")
+			.attr("fill", "none")
+			.attr("stroke", "steelblue")
+			.attr("stroke-width", 1)
+			.attr("d", d3.line()
+				.x( function(d) { console.log( x(new Date(d.date) ) ) ; return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.cases ); })) ;
+
+
+	// Set up Interaction
 	d3.select("#state")
 		.on("change", function(d)
 		{
@@ -136,27 +178,17 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 			var sel_county = my_county.value;
 			var state_data = all_data.filter( function(d) { return (d.state == sel_state) ; } )
 			var county_data = state_data.filter( function(d) { return (d.county == sel_county) ; } );
-
-			console.log( county_data );
-
-			county_data.forEach( function(d) {
-				d.date = d3.timeParse("%Y-%m-%d")(d.date);
-				d.deaths = +d.deaths;
-				d.cases = +d.cases;
-			});
 			county_data.sort((a,b) => d3.ascending(a.date, b.date));
 
 			// Add the deaths path
 			svg.append("path")
-				.data(county_data)
+				.datum(county_data)
 				.attr("fill", "none")
 				.attr("stroke", "steelblue")
 				.attr("stroke-width", 1)
 				.attr("d", d3.line()
-					.x( function(d) { return x(d.date); })
-					.y( function(d) { return y(d.deaths); })
-				);
-
+					.x( function(d) { console.log( x(new Date(d.date) ) ) ; return x(new Date(d.date) ); })
+					.y( function(d) { return y( +d.deaths ); }))
 		});
 
 
