@@ -127,8 +127,6 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 	var county_data = state_data.filter( function(d) { return (d.county == "Clark") ; } );
 	county_data.sort((a,b) => d3.ascending(a.date, b.date));
 
-	console.log( d3.min( county_data, d => d.date ) )
-
 	x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
 	y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
   d3.select("#x_axis").call(xAxis);
@@ -141,8 +139,8 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.attr("stroke", "steelblue")
 		.attr("stroke-width", 1)
 		.attr("d", d3.line()
-			.x( function(d) { console.log( x(new Date(d.date)) ); return x( new Date(d.date)) ; })
-			.y( function(d) { console.log ( y(d.deaths) ); return y( +d.deaths ); })) ;
+			.x( function(d) { return x( new Date(d.date)) ; })
+			.y( function(d) { return y( +d.deaths ); })) ;
 
 		svg.append("path")
 			.datum(county_data)
