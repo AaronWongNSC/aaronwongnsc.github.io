@@ -8,6 +8,8 @@ published: True
 
 Late last night, I was able to get the basic code to display the [New York Times COVID-19 Dataset](https://github.com/nytimes/covid-19-data) by county. The [current code](https://aaronwongnsc.github.io/files/CovidInformation-NYT.html) does nothing more than that. I would like to get it to display the new cases and new deaths rather than the totals, and I would also like to apply some smoothing over different numbers of days (adjustable). I would also like it to display other information, such as the first infection, total cases, and total deaths. There's also a part of me that wants to be able to display a map of the state and county, but I'm not sure that I really want to do that.
 
+Using the dataset directly from Github means that it automatically updates when they update their repository. I don't know if it's an acceptable use, but until I find information that says otherwise, I'm going to trust that this little script isn't causing any harm.
+
 ## Important Things I Learned
 
 The previous project had a bar graph, and I was able to bind the data to each rectangle and read the information that way. In this case, the line graphs require some steps. You need to create a line generator to push the data into the path.
