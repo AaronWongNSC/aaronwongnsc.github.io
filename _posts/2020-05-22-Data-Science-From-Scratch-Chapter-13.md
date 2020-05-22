@@ -16,7 +16,9 @@ The math behind this is just Bayes' theorem. As with all conditional probabiliti
 
 The author spends a few pages that are mostly just code in order to develop his classifier. I'm just going to focus on the overall prediction process. (A non-spam message is called ham. That's an amusing play on words.)
 
-- There are three messages in the training set: "spam rules" (spam), "ham rules" (ham), and "hello ham" (ham). This leads to a collection of four keywords that will be used to determine whether a message is spam.
+- There are three messages in the training set: "spam rules" (spam), "ham rules" (ham), and "hello ham" (ham). This leads to a collection of four keywords that will be used to determine whether a message is spam. ("spam", "rules", "ham", "hello")
 - A pseudocount value of 0.5 is used in order to ensure that no value can lead to a 0% probability of spam. This value is added to the numerator and twice this number is added to the denominator of the conditional probability. This is essentially like assuming that there's a 50-50 chance of something being spam or ham without knowing anything about it, and very similar to using $$\beta(1,1)$$ as the prior before any observations.
-- We then need to calculate the probability of the word indicating spam or ham.
-  - "spam": This was present in one out of the three messages and that was a spam message. So the corresponding probability value is $$\frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75\%$$.
+- We are going to analyze the message "hello spam." This message contains two of the four keywords.
+- We then need to calculate the probability of the pesence or absence of each keyword indicating spam or ham. (This is the part of the calculation that was not matching my intuition. The probilities for any specific word will not add up to 100%.) In the chart below, it is important to know that there was 1 spam message and 2 ham messages in the training set.
+  | Keyword | In message | # in Training for Spam | P( keyword | spam) | # in Training for Ham | P( keyword | ham |
+  | spam | True | 1 | $$\frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75%$$ | 0 | $$\frac{0 + 0.5}{2 + 2 \cdot (0.5)} = 16.7% |
