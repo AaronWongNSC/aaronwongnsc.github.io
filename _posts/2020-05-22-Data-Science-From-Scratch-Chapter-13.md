@@ -19,3 +19,4 @@ The author spends a few pages that are mostly just code in order to develop his 
 - There are three messages in the training set: "spam rules" (spam), "ham rules" (ham), and "hello ham" (ham). This leads to a collection of four keywords that will be used to determine whether a message is spam.
 - A pseudocount value of 0.5 is used in order to ensure that no value can lead to a 0% probability of spam. This value is added to the numerator and twice this number is added to the denominator of the conditional probability. This is essentially like assuming that there's a 50-50 chance of something being spam or ham without knowing anything about it, and very similar to using $$\beta(1,1)$$ as the prior before any observations.
 - We then need to calculate the probability of the word indicating spam or ham.
+  - Test
