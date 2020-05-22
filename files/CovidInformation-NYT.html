@@ -20,7 +20,7 @@
 }
 </style>
 
-<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
 
 </head>
 <body>
@@ -37,19 +37,65 @@
 </div>
 
 <script>
-d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv", function(d) {
+d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv").then( function(d) {
 //d3.csv("us-counties.csv", function(d) {
-
+	// Preserve the data by naming it
 	var all_data = d;
 
+	// Set up display variables
+	var width = 1000;
+	var height = 500;
+	var margin = { left: 50, right: 50, top: 50, bottom: 100 };
+
+	var disp_height = height - margin.top - margin.bottom;
+	var disp_width = width - margin.left - margin.right;
+
+	// Set up SVG canvas
+
+	var x = d3.scaleTime()
+		.domain([new Date("2020-01-29"), new Date("2020-05-29")])
+		.range([0, disp_width]);
+
+	var y = d3.scaleLinear()
+		.domain( [0, 1000] )
+		.range([disp_height,0]);
+
+	var xAxis = d3.axisBottom(x);
+
+	var yAxis = d3.axisLeft(y);
+
+	// Set up svg
+	var svg = d3.select("body").append("svg")
+		.attr("width", width)
+		.attr("height", height)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")" );
+
+	// Draw x and y axes
+	svg.append("g")
+		.attr("id", "x_axis")
+		.attr("class", "axis")
+		.attr("transform", "translate(0," + disp_height + ")")
+		.call(xAxis)
+		.selectAll("text")
+		.style("font-size", "8px")
+		.style("text-anchor", "end")
+		.attr("dx", "-.8em")
+		.attr("dy", "-.55em")
+		.attr("transform", "rotate(-90)" );
+
+ 	svg.append("g")
+		.attr("id", "y_axis")
+	    	.attr("class", "axis")
+    		.call(yAxis);
+
+	// Set up drop-down menus
 	var states = d3.map( d , function (d) { return d.state ; } ).keys().sort(d3.ascending);
 
 	var counties_by_state = [];
 	for ( i = 0; i < states.length; i++ )
 	{
-		counties_by_state.push( d3.map(
-			d.filter( function (d) {return d.state == states[i] ;} ), function(d) {return d.county ;})
-			.keys().sort(d3.ascending) );
+		counties_by_state.push( d3.map( d.filter( function(d) { return d.state == states[i] } ), function(d) {return d.county} ).keys().sort( d3.ascending ) );
 	}
 
 	d3.select("#state").selectAll("option")
@@ -82,13 +128,35 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 	d3.select("#county")
 		.on("change", function(d)
 		{
+			// Get county level data
 			my_state = document.getElementById("state");
 			my_county = document.getElementById("county");
 
 			var sel_state = my_state.value;
 			var sel_county = my_county.value;
+			var state_data = all_data.filter( function(d) { return (d.state == sel_state) ; } )
+			var county_data = state_data.filter( function(d) { return (d.county == sel_county) ; } );
 
-			var county_data = all_data.filter( function(d) { return (d.state == sel_state && d.county == sel_county) ; } );
+			console.log( county_data );
+
+			county_data.forEach( function(d) {
+				d.date = d3.timeParse("%Y-%m-%d")(d.date);
+				d.deaths = +d.deaths;
+				d.cases = +d.cases;
+			});
+			county_data.sort((a,b) => d3.ascending(a.date, b.date));
+
+			// Add the deaths path
+			svg.append("path")
+				.data(county_data)
+				.attr("fill", "none")
+				.attr("stroke", "steelblue")
+				.attr("stroke-width", 1)
+				.attr("d", d3.line()
+					.x( function(d) { return x(d.date); })
+					.y( function(d) { return y(d.deaths); })
+				);
+
 		});
 
 
