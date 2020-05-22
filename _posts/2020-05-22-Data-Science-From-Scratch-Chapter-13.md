@@ -21,5 +21,5 @@ The author spends a few pages that are mostly just code in order to develop his 
 - We are going to analyze the message "hello spam." This message contains two of the four keywords.
 - We then need to calculate the probability of the pesence or absence of each keyword indicating spam or ham. (This is the part of the calculation that was not matching my intuition. The probilities for any specific word will not add up to 100%.) In the chart below, it is important to know that there was 1 spam message and 2 ham messages in the training set.
 
-| Keyword | In message | # in Training for Spam | P( keyword | spam) | # in Training for Ham | P( keyword | ham |
-| spam | True | 1 | $$\frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75%$$ | 0 | $$\frac{0 + 0.5}{2 + 2 \cdot (0.5)} = 16.7% |
+| Keyword | In message | # in Training for Spam | P( keyword \| spam) | # in Training for Ham | P( keyword \| ham ) |
+| spam | True | 1 | $$\frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75%$$ | 0 | $$\frac{0 + 0.5}{2 + 2 \cdot (0.5)} = 16.7%$$ |
