@@ -12,6 +12,8 @@ The Naive Bayes classifier is an interesting construction that uses conditional 
 
 The math behind this is just Bayes' theorem. As with all conditional probabilities, intuition is a terrible guide. As I read through the section, my intuition kept saying that if you multiply enough probabilities together, the probability simply goes down to zero. But that's not exactly what's happening here. And it wasn't until I slowed myself down to go through the steps in detail that it started to click. And so I'm going to take the time to write out those extra steps and numbers because I think it was an important part of my own understanding of the topic.
 
+One quick piece of math is that instead of using products, it's better to sum the logarithms and then take the exponential when you're done. This helps with the underflow of having lots of small values being multiplied together.
+
 ## Spam Example
 
 The author spends a few pages that are mostly just code in order to develop his classifier. I'm just going to focus on the overall prediction process. (A non-spam message is called ham. That's an amusing play on words.)
@@ -25,4 +27,4 @@ The author spends a few pages that are mostly just code in order to develop his 
 | ham | False | $$ 1 - \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ 1 - \frac{2 + 0.5}{2 + 2 \cdot (0.5)} = 83.3\% $$ |
 | rules | False | $$ 1 - \frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75\% $$ | $$ 1 - \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
 | hello | True | $$ \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
-- The prediction of whether this is spam is the product of all the probabilities in the first column divided by the product of the probabilities
+- The prediction of whether this is spam is the product of all the probabilities in the first column divided by the product of the probabilities of the two columns added together. This allows each new keyword to pull the overall value either closer to 0 or closer 1.
