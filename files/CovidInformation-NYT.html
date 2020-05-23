@@ -38,13 +38,85 @@ The data is taken directly from the <a href="https://github.com/nytimes/covid-19
 
 <div id="facts" align="center">
 	<div id="first"></div>
-	<div id="cases"></div>
-	<div id="deaths"></div>
+	<div id="totalcases"></div>
+	<div id="totaldeaths"></div>
+</div>
+
+<div id="checkboxes" align="center">
+	<input type="checkbox" id="cumulativecases"> Show cumulative cases <br>
+	<input type="checkbox" id="dailycases"> Show cumulative cases <br>
+	<input type="checkbox" id="cumulativedeaths"> Show cumulative deaths <br>
+	<input type="checkbox" id="dailydeaths"> Show cumulative deaths <br>
 </div>
 
 <script>
 d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv").then( function(d) {
 //d3.csv("us-counties.csv", function(d) {
+	function dispGraphs()
+	{
+		// Collect Information
+		my_state = document.getElementById("state");
+		my_county = document.getElementById("county");
+
+		var sel_state = my_state.value;
+		var sel_county = my_county.value;
+
+		var state_index = states.indexOf( sel_state );
+		var counties = counties_by_state[state_index];
+
+		// Get county level data
+		var state_data = all_data.filter( function(d) { return (d.state == sel_state) ; } )
+		var county_data = state_data.filter( function(d) { return (d.county == sel_county) ; } );
+		county_data.sort((a,b) => d3.ascending(a.date, b.date));
+
+		// Change fact box
+		var firstdate = new Date(d3.min( county_data, d => d.date ));
+		d3.select("#first").text( "First case: " + firstdate.toLocaleDateString() );
+		d3.select("#totalcases").text( "Total cases: " + d3.max( county_data, d => +d.cases) );
+		d3.select("#totaldeaths").text( "Total deaths: " + d3.max( county_data, d => +d.deaths) );
+
+		x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
+		y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
+		d3.select("#x_axis").call(xAxis);
+		d3.select("#y_axis").call(yAxis);
+
+		new_cases = [ { "date": county_data[0].date, "new_cases": county_data[0].cases } ];
+		for (i = 1 ; i < county_data.length - 1 ; i++)
+		{
+			new_cases.push( {"date": county_data[i].date, "new_cases": county_data[i].cases - county_data[i-1].cases })
+		}
+
+		new_deaths = [ { "date": county_data[0].date, "new_deaths": county_data[0].deaths } ];
+		for (i = 1 ; i < county_data.length - 1 ; i++)
+		{
+			new_deaths.push( {"date": county_data[i].date, "new_deaths": county_data[i].deaths - county_data[i-1].deaths })
+		}
+
+		// Add the paths
+		svg.select("#deaths")
+			.datum(county_data)
+			.attr("d", d3.line()
+				.x( function(d) { return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.deaths ); }))
+
+		svg.select("#cases")
+			.datum(county_data)
+			.attr("d", d3.line()
+				.x( function(d) { return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.cases ); }))
+
+		svg.select("#new_cases")
+			.datum(new_cases)
+			.attr("d", d3.line()
+				.x( function(d) { return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.new_cases ); })) ;
+
+		svg.select("#new_deaths")
+			.datum(new_deaths)
+			.attr("d", d3.line()
+				.x( function(d) { return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.new_deaths ); })) ;
+	}
 	// Preserve the data by naming it
 	var all_data = d;
 
@@ -127,10 +199,28 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 	var county_data = state_data.filter( function(d) { return (d.county == "Clark") ; } );
 	county_data.sort((a,b) => d3.ascending(a.date, b.date));
 
+	// Calculate new cases and new deaths
+	new_cases = [ { "date": county_data[0].date, "new_cases": county_data[0].cases } ];
+	for (i = 1 ; i < county_data.length - 1 ; i++)
+	{
+		new_cases.push( {"date": county_data[i].date, "new_cases": county_data[i].cases - county_data[i-1].cases })
+	}
+
+	new_deaths = [ { "date": county_data[0].date, "new_deaths": county_data[0].deaths } ];
+	for (i = 1 ; i < county_data.length - 1 ; i++)
+	{
+		new_deaths.push( {"date": county_data[i].date, "new_deaths": county_data[i].deaths - county_data[i-1].deaths })
+	}
+
 	x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
 	y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
   d3.select("#x_axis").call(xAxis);
 	d3.select("#y_axis").call(yAxis);
+
+	var firstdate = new Date(d3.min( county_data, d => d.date ));
+	d3.select("#first").text( "First case: " + firstdate.toLocaleDateString() );
+	d3.select("#totalcases").text( "Total cases: " + d3.max( county_data, d => +d.cases) );
+	d3.select("#totaldeaths").text( "Total deaths: " + d3.max( county_data, d => +d.deaths) );
 
 	svg.append("path")
 		.datum(county_data)
@@ -142,16 +232,36 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 			.x( function(d) { return x( new Date(d.date)) ; })
 			.y( function(d) { return y( +d.deaths ); })) ;
 
-		svg.append("path")
-			.datum(county_data)
-			.attr("id", "cases")
-			.attr("fill", "none")
-			.attr("stroke", "steelblue")
-			.attr("stroke-width", 1)
-			.attr("d", d3.line()
-				.x( function(d) { return x(new Date(d.date) ); })
-				.y( function(d) { return y( +d.cases ); })) ;
+	svg.append("path")
+		.datum(county_data)
+		.attr("id", "cases")
+		.attr("fill", "none")
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 1)
+		.attr("d", d3.line()
+			.x( function(d) { return x(new Date(d.date) ); })
+			.y( function(d) { return y( +d.cases ); })) ;
 
+	svg.append("path")
+		.datum(new_cases)
+		.attr("id", "new_cases")
+		.attr("fill", "none")
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 1)
+		.attr("d", d3.line()
+			.x( function(d) { return x(new Date(d.date) ); })
+			.y( function(d) { return y( +d.new_cases ); })) ;
+
+
+	svg.append("path")
+		.datum(new_deaths)
+		.attr("id", "new_deaths")
+		.attr("fill", "none")
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 1)
+		.attr("d", d3.line()
+			.x( function(d) { return x(new Date(d.date) ); })
+			.y( function(d) { return y( +d.new_deaths ); })) ;
 
 	// Set up Interaction
 	d3.select("#state")
@@ -172,39 +282,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 				.attr("value", function(d) { return d; } )
 				.text( function(d) { return d; } ) ;
 
-				// Get county level data
-				my_state = document.getElementById("state");
-				my_county = document.getElementById("county");
-
-				var sel_state = my_state.value;
-				var sel_county = my_county.value;
-				var state_data = all_data.filter( function(d) { return (d.state == sel_state) ; } )
-				var county_data = state_data.filter( function(d) { return (d.county == sel_county) ; } );
-				county_data.sort((a,b) => d3.ascending(a.date, b.date));
-
-				x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
-				y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
-			  d3.select("#x_axis").call(xAxis);
-				d3.select("#y_axis").call(yAxis);
-
-				// Add the paths
-				svg.select("#deaths")
-					.datum(county_data)
-					.attr("fill", "none")
-					.attr("stroke", "steelblue")
-					.attr("stroke-width", 1)
-					.attr("d", d3.line()
-						.x( function(d) { return x(new Date(d.date) ); })
-						.y( function(d) { return y( +d.deaths ); }))
-
-					svg.select("#cases")
-						.datum(county_data)
-						.attr("fill", "none")
-						.attr("stroke", "steelblue")
-						.attr("stroke-width", 1)
-						.attr("d", d3.line()
-							.x( function(d) { return x(new Date(d.date) ); })
-							.y( function(d) { return y( +d.cases ); }))
+			dispGraphs();
 		});
 
 	d3.select("#county")
