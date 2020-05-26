@@ -25,8 +25,9 @@ The author spends a few pages that are mostly just code in order to develop his 
 
 | Keyword | Present in Message | P if spam | P if ham |
 | spam | True | $$ \frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75\% $$ | $$ \frac{0 + 0.5}{2 + 2 \cdot (0.5)} = 16.7\% $$ |
-| ham | False | $$ 1 - \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ 1 - \frac{2 + 0.5}{2 + 2 \cdot (0.5)} = 83.3\% $$ |
-| rules | False | $$ 1 - \frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75\% $$ | $$ 1 - \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
+| ham | False | $$ 1 - \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 75\% $$ | $$ 1 - \frac{2 + 0.5}{2 + 2 \cdot (0.5)} = 16.7\% $$ |
+| rules | False | $$ 1 - \frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ 1 - \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
 | hello | True | $$ \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
+|       | PRODUCT | $$0.03515625$$ | $$0.00697225$$ |
 
-- The prediction of whether this is spam is the product of all the probabilities in the first column divided by the product of the probabilities of the two columns added together. This allows each new keyword to pull the overall value either closer to 0 or closer 1.
+- The prediction of whether this is spam is the product of all the probabilities in the first column divided by the product of the probabilities of the two columns added together. This allows each new keyword to pull the overall value either closer to 0 or closer 1. The end result is $$\frac{0.03515625}{0.03515625 + 0.00697225} = 0.8345$$.
