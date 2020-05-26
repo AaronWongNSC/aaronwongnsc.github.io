@@ -2,12 +2,6 @@
 <head>
 <style>
 
-.rectangle {
-	fill: steelblue;
-}
-.rectangle:hover {
-	fill: orange;
-}
 .axis {
   font: 10px sans-serif;
 }
@@ -43,10 +37,10 @@ The data is taken directly from the <a href="https://github.com/nytimes/covid-19
 </div>
 
 <div id="checkboxes" align="center">
+	<input type="checkbox" id="dailycases" checked> Show daily cases <br>
+	<input type="checkbox" id="dailydeaths" checked> Show daily deaths <br>
 	<input type="checkbox" id="cumulativecases"> Show cumulative cases <br>
-	<input type="checkbox" id="dailycases"> Show cumulative cases <br>
 	<input type="checkbox" id="cumulativedeaths"> Show cumulative deaths <br>
-	<input type="checkbox" id="dailydeaths"> Show cumulative deaths <br>
 </div>
 
 <script>
@@ -98,6 +92,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 			.attr("d", d3.line()
 				.x( function(d) { return x(new Date(d.date) ); })
 				.y( function(d) { return y( +d.deaths ); }))
+
 
 		svg.select("#cases")
 			.datum(county_data)
@@ -227,7 +222,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.attr("id", "deaths")
 		.attr("fill", "none")
 		.attr("stroke", "steelblue")
-		.attr("stroke-width", 1)
+		.attr("stroke-width", 2)
 		.attr("d", d3.line()
 			.x( function(d) { return x( new Date(d.date)) ; })
 			.y( function(d) { return y( +d.deaths ); })) ;
@@ -237,7 +232,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.attr("id", "cases")
 		.attr("fill", "none")
 		.attr("stroke", "steelblue")
-		.attr("stroke-width", 1)
+		.attr("stroke-width", 2)
 		.attr("d", d3.line()
 			.x( function(d) { return x(new Date(d.date) ); })
 			.y( function(d) { return y( +d.cases ); })) ;
@@ -288,39 +283,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 	d3.select("#county")
 		.on("change", function(d)
 		{
-			// Get county level data
-			my_state = document.getElementById("state");
-			my_county = document.getElementById("county");
-
-			var sel_state = my_state.value;
-			var sel_county = my_county.value;
-			var state_data = all_data.filter( function(d) { return (d.state == sel_state) ; } )
-			var county_data = state_data.filter( function(d) { return (d.county == sel_county) ; } );
-			county_data.sort((a,b) => d3.ascending(a.date, b.date));
-
-			x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
-			y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
-		  d3.select("#x_axis").call(xAxis);
-			d3.select("#y_axis").call(yAxis);
-
-			// Add the paths
-			svg.select("#deaths")
-				.datum(county_data)
-				.attr("fill", "none")
-				.attr("stroke", "steelblue")
-				.attr("stroke-width", 1)
-				.attr("d", d3.line()
-					.x( function(d) { return x(new Date(d.date) ); })
-					.y( function(d) { return y( +d.deaths ); }))
-
-				svg.select("#cases")
-					.datum(county_data)
-					.attr("fill", "none")
-					.attr("stroke", "steelblue")
-					.attr("stroke-width", 1)
-					.attr("d", d3.line()
-						.x( function(d) { return x(new Date(d.date) ); })
-						.y( function(d) { return y( +d.cases ); }))
+			dispGraphs();
 		});
 
 
