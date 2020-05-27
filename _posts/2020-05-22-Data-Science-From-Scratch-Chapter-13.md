@@ -23,11 +23,13 @@ The author spends a few pages that are mostly just code in order to develop his 
 - We are going to analyze the message "hello spam." This message contains two of the four keywords.
 - We then need to calculate the probability of the pesence or absence of each keyword indicating spam or ham. (This is the part of the calculation that was not matching my intuition. The probilities for any specific word will not add up to 100%.) It is important to know that there was 1 spam message and 2 ham messages in the training set. This shows up in the corresponding denominators.
 
+<center>
 | Keyword | Present in Message | P if spam | P if ham |
 | spam | True | $$ \frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 75\% $$ | $$ \frac{0 + 0.5}{2 + 2 \cdot (0.5)} = 16.7\% $$ |
 | ham | False | $$ 1 - \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 75\% $$ | $$ 1 - \frac{2 + 0.5}{2 + 2 \cdot (0.5)} = 16.7\% $$ |
 | rules | False | $$ 1 - \frac{1 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ 1 - \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
 | hello | True | $$ \frac{0 + 0.5}{1 + 2 \cdot (0.5)} = 25\% $$ | $$ \frac{1 + 0.5}{2 + 2 \cdot (0.5)} = 50\% $$ |
 |       | PRODUCT | $$0.03515625$$ | $$0.00697225$$ |
+</center>
 
 - The prediction of whether this is spam is the product of all the probabilities in the first column divided by the product of the probabilities of the two columns added together. This allows each new keyword to pull the overall value either closer to 0 or closer 1. The end result is $$\frac{0.03515625}{0.03515625 + 0.00697225} = 0.8345$$.
