@@ -21,7 +21,7 @@
 </head>
 <body>
 
-The data is taken directly from the <a href="https://github.com/nytimes/covid-19-data">New York Times COVID-19 Dataset</a>. Note that this is a work in progress.
+The data is taken directly from the <a href="https://github.com/nytimes/covid-19-data">New York Times COVID-19 Dataset</a>.
 
 <hr>
 
@@ -30,17 +30,35 @@ The data is taken directly from the <a href="https://github.com/nytimes/covid-19
 	<select id="county" class="dropdown"></select>
 </div>
 
+<br>
+
 <div id="facts" align="center">
 	<div id="first"></div>
+	<div id="last"></div>
 	<div id="totalcases"></div>
 	<div id="totaldeaths"></div>
 </div>
 
+<br>
+
 <div id="checkboxes" align="center">
-	<input type="checkbox" id="dailycases" checked> Show daily cases <br>
-	<input type="checkbox" id="dailydeaths" checked> Show daily deaths <br>
+	<input type="checkbox" id="dailycases"> Show daily cases <br>
+	<input type="checkbox" id="dailydeaths"> Show daily deaths <br>
+	<input type="checkbox" id="smoothcases" checked> Show smoothed cases <br>
+	<input type="checkbox" id="smoothdeaths" checked> Show smoothed deaths <br>
 	<input type="checkbox" id="cumulativecases"> Show cumulative cases <br>
 	<input type="checkbox" id="cumulativedeaths"> Show cumulative deaths <br>
+</div>
+
+<br>
+
+<div id="running_average" align="center">
+	Running averages for new cases and new deaths:
+	<select id="smoothing">
+		<option id="0", value="0">No running average</option>
+		<option id="3", value="3">3 day average</option>
+		<option id="7", value="7" selected>7 day average</option>
+	</select>
 </div>
 
 <script>
@@ -65,26 +83,139 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 
 		// Change fact box
 		var firstdate = new Date(d3.min( county_data, d => d.date ));
+		var lastdate = new Date(d3.max( county_data, d => d.date ));
+
 		d3.select("#first").text( "First case: " + firstdate.toLocaleDateString() );
+		d3.select("#last").text( "Last date in dataset: " + lastdate.toLocaleDateString() );
 		d3.select("#totalcases").text( "Total cases: " + d3.max( county_data, d => +d.cases) );
 		d3.select("#totaldeaths").text( "Total deaths: " + d3.max( county_data, d => +d.deaths) );
 
-		x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
-		y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
-		d3.select("#x_axis").call(xAxis);
-		d3.select("#y_axis").call(yAxis);
+		// Get information to display
+		show_dailycases = document.getElementById("dailycases").checked;
+		show_dailydeaths = document.getElementById("dailydeaths").checked;
+		show_cumulativecases = document.getElementById("cumulativecases").checked;
+		show_cumulativedeaths = document.getElementById("cumulativedeaths").checked;
+		show_smoothcases = document.getElementById("smoothcases").checked;
+		show_smoothdeaths = document.getElementById("smoothdeaths").checked;
+		smoothing = document.getElementById("smoothing").value;
 
+		// Create new data arrays
 		new_cases = [ { "date": county_data[0].date, "new_cases": county_data[0].cases } ];
-		for (i = 1 ; i < county_data.length - 1 ; i++)
+		for (i = 1 ; i < county_data.length ; i++)
 		{
 			new_cases.push( {"date": county_data[i].date, "new_cases": county_data[i].cases - county_data[i-1].cases })
 		}
 
 		new_deaths = [ { "date": county_data[0].date, "new_deaths": county_data[0].deaths } ];
-		for (i = 1 ; i < county_data.length - 1 ; i++)
+		for (i = 1 ; i < county_data.length ; i++)
 		{
 			new_deaths.push( {"date": county_data[i].date, "new_deaths": county_data[i].deaths - county_data[i-1].deaths })
 		}
+
+		// Smoothing the Graphs
+		var smooth_cases = [];
+		var smooth_deaths = [];
+
+		if ( smoothing == 0)
+		{
+			smooth_cases = new_cases;
+			smooth_deaths = new_deaths;
+		}
+		else if (smoothing == 3)
+		{
+			smooth_cases.push( { "date": new_cases[0].date, "new_cases": new_cases[0].new_cases/3 });
+			smooth_cases.push( { "date": new_cases[1].date, "new_cases": (new_cases[0].new_cases/3) + (new_cases[1].new_cases/3) });
+			for (i = 2 ; i < county_data.length ; i++)
+			{
+				smooth_cases.push( {"date": new_cases[i].date, "new_cases": (new_cases[i-2].new_cases/3) + (new_cases[i-1].new_cases/3) + (new_cases[i].new_cases/3) } )
+			}
+
+			smooth_deaths.push( { "date": new_deaths[0].date, "new_deaths": new_deaths[0].new_deaths/3 });
+			smooth_deaths.push( { "date": new_deaths[1].date, "new_deaths": (new_deaths[0].new_deaths/3) + (new_deaths[1].new_deaths/3) } );
+			for (i = 2 ; i < county_data.length ; i++)
+			{
+				smooth_deaths.push( {"date": new_deaths[i].date, "new_deaths": (new_deaths[i-2].new_deaths/3) + (new_deaths[i-1].new_deaths/3) + (new_deaths[i].new_deaths/3) } )
+			}
+		}
+		else if (smoothing == 7)
+		{
+			smooth_cases.push( { "date": new_cases[0].date, "new_cases": new_cases[0].new_cases/7 });
+			smooth_cases.push( { "date": new_cases[1].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) });
+			smooth_cases.push( { "date": new_cases[2].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) });
+			smooth_cases.push( { "date": new_cases[3].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7) });
+			smooth_cases.push( { "date": new_cases[4].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7)
+				+ (new_cases[4].new_cases/7) });
+			smooth_cases.push( { "date": new_cases[5].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7)
+				+ (new_cases[4].new_cases/7) + (new_cases[5].new_cases/7) });
+			smooth_cases.push( { "date": new_cases[6].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7)
+				+ (new_cases[4].new_cases/7) + (new_cases[5].new_cases/7) + (new_cases[6].new_cases/7) });
+			for (i = 6 ; i < new_cases.length ; i++)
+			{
+				smooth_cases.push( {"date": new_cases[i].date, "new_cases": (new_cases[i-6].new_cases/7) + (new_cases[i-5].new_cases/7) + (new_cases[i-4].new_cases/7)
+					+ (new_cases[i-3].new_cases/7) + (new_cases[i-2].new_cases/7) + (new_cases[i-1].new_cases/7) + (new_cases[i].new_cases/7) } )
+			}
+
+			smooth_deaths.push( { "date": new_deaths[0].date, "new_deaths": new_deaths[0].new_deaths/7 });
+			smooth_deaths.push( { "date": new_deaths[1].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) });
+			smooth_deaths.push( { "date": new_deaths[2].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths)/7 });
+			smooth_deaths.push( { "date": new_deaths[3].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+				+ (new_deaths[3].new_deaths/7) });
+			smooth_deaths.push( { "date": new_deaths[4].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+				+ (new_deaths[3].new_deaths/7) + (new_deaths[4].new_deaths/7) });
+			smooth_deaths.push( { "date": new_deaths[5].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+				+ (new_deaths[3].new_deaths/7) + (new_deaths[4].new_deaths/7) + (new_deaths[5].new_deaths/7) });
+			smooth_deaths.push( { "date": new_deaths[6].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+				+ (new_deaths[3].new_deaths/7) + (new_deaths[4].new_deaths/7) + (new_deaths[5].new_deaths/7) + (new_deaths[6].new_deaths/7) });
+			for (i = 6 ; i < new_deaths.length ; i++)
+			{
+				smooth_deaths.push( {"date": new_deaths[i].date, "new_deaths": (new_deaths[i-6].new_deaths/7) + (new_deaths[i-5].new_deaths/7) + (new_deaths[i-4].new_deaths/7)
+					+ (new_deaths[i-3].new_deaths/7) + (new_deaths[i-2].new_deaths/7) + (new_deaths[i-1].new_deaths/7) + (new_deaths[i].new_deaths/7) } )
+			}
+		}
+
+		// Determine y-axis upper limit
+		var max_y = 0
+
+		if (show_dailydeaths || show_smoothdeaths)
+		{
+			max_y = d3.max( new_deaths, d => d.new_deaths )
+		}
+		if (show_dailycases || show_smoothcases)
+		{
+			max_y = d3.max( new_cases, d => d.new_cases )
+		}
+		if (show_cumulativedeaths)
+		{
+			max_y = d3.max( county_data, d => +d.deaths )
+		}
+		if (show_cumulativecases)
+		{
+			max_y = d3.max( county_data, d => +d.cases )
+		}
+
+		x.domain([ firstdate , lastdate ]);
+		y.domain([ 0,	 max_y ]);
+		d3.select("#x_axis").call(xAxis);
+		d3.select("#y_axis").call(yAxis);
+
+		// Set line widths
+		if (show_dailydeaths) { svg.select("#new_deaths").attr("stroke-width", 2)	}
+		else { svg.select("#new_deaths").attr("stroke-width", 0) };
+
+		if (show_dailycases){ svg.select("#new_cases").attr("stroke-width", 2) }
+		else { svg.select("#new_cases").attr("stroke-width", 0) };
+
+		if (show_cumulativedeaths) { svg.select("#deaths").attr("stroke-width", 2)}
+		else { svg.select("#deaths").attr("stroke-width", 0) };
+
+		if (show_cumulativecases)	{	svg.select("#cases").attr("stroke-width", 2) }
+		else { svg.select("#cases").attr("stroke-width", 0) };
+
+		if (show_smoothdeaths) { svg.select("#smooth_deaths").attr("stroke-width", 2)}
+		else { svg.select("#smooth_deaths").attr("stroke-width", 0) };
+
+		if (show_smoothcases)	{	svg.select("#smooth_cases").attr("stroke-width", 2) }
+		else { svg.select("#smooth_cases").attr("stroke-width", 0) };
 
 		// Add the paths
 		svg.select("#deaths")
@@ -111,6 +242,19 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 			.attr("d", d3.line()
 				.x( function(d) { return x(new Date(d.date) ); })
 				.y( function(d) { return y( +d.new_deaths ); })) ;
+
+		svg.select("#smooth_cases")
+			.datum(smooth_cases)
+			.attr("d", d3.line()
+				.x( function(d) { return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.new_cases ); })) ;
+
+		svg.select("#smooth_deaths")
+			.datum(smooth_deaths)
+			.attr("d", d3.line()
+				.x( function(d) { return x(new Date(d.date) ); })
+				.y( function(d) { return y( +d.new_deaths ); })) ;
+
 	}
 	// Preserve the data by naming it
 	var all_data = d;
@@ -125,7 +269,6 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 
 	// Set up SVG canvas
 	var x = d3.scaleTime()
-		.domain([ new Date("2020-01-01"), new Date("2020-05-29")])
 		.range([0, disp_width]);
 
 	var y = d3.scaleLinear()
@@ -189,6 +332,13 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.text( function(d) { return d; } )
 		.property("selected", function(d) { return d == "Clark"});
 
+	// Add onclick to the checkboxes
+	d3.selectAll("input")
+		.on("change", function(d)
+		{
+			dispGraphs();
+		});
+
 	// Draw Initial Graph
 	var state_data = all_data.filter( function(d) { return (d.state == "Nevada") ; } )
 	var county_data = state_data.filter( function(d) { return (d.county == "Clark") ; } );
@@ -207,13 +357,80 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		new_deaths.push( {"date": county_data[i].date, "new_deaths": county_data[i].deaths - county_data[i-1].deaths })
 	}
 
-	x.domain([ new Date(d3.min( county_data, d => d.date )), new Date(d3.max( county_data, d => d.date)) ]);
-	y.domain([ 0,	 d3.max( county_data, d => +d.cases) ]);
+	// Set up smoothing calculations
+	smoothing = document.getElementById("smoothing").value;
+
+	var smooth_cases = [];
+	var smooth_deaths = [];
+
+	if ( smoothing == 0)
+	{
+		smooth_cases = new_cases;
+		smooth_deaths = new_deaths;
+	}
+	else if (smoothing == 3)
+	{
+		smooth_cases.push( { "date": new_cases[0].date, "new_cases": new_cases[0].new_cases/3 });
+		smooth_cases.push( { "date": new_cases[1].date, "new_cases": (new_cases[0].new_cases/3) + (new_cases[1].new_cases/3) });
+		for (i = 2 ; i < county_data.length ; i++)
+		{
+			smooth_cases.push( {"date": new_cases[i].date, "new_cases": (new_cases[i-2].new_cases/3) + (new_cases[i-1].new_cases/3) + (new_cases[i].new_cases/3) } )
+		}
+
+		smooth_deaths.push( { "date": new_deaths[0].date, "new_deaths": new_deaths[0].new_deaths/3 });
+		smooth_deaths.push( { "date": new_deaths[1].date, "new_deaths": (new_deaths[0].new_deaths/3) + (new_deaths[1].new_deaths/3) } );
+		for (i = 2 ; i < county_data.length ; i++)
+		{
+			smooth_deaths.push( {"date": new_deaths[i].date, "new_deaths": (new_deaths[i-2].new_deaths/3) + (new_deaths[i-1].new_deaths/3) + (new_deaths[i].new_deaths/3) } )
+		}
+	}
+	else if (smoothing == 7)
+	{
+		smooth_cases.push( { "date": new_cases[0].date, "new_cases": new_cases[0].new_cases/7 });
+		smooth_cases.push( { "date": new_cases[1].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) });
+		smooth_cases.push( { "date": new_cases[2].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) });
+		smooth_cases.push( { "date": new_cases[3].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7) });
+		smooth_cases.push( { "date": new_cases[4].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7)
+			+ (new_cases[4].new_cases/7) });
+		smooth_cases.push( { "date": new_cases[5].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7)
+			+ (new_cases[4].new_cases/7) + (new_cases[5].new_cases/7) });
+		smooth_cases.push( { "date": new_cases[6].date, "new_cases": (new_cases[0].new_cases/7) + (new_cases[1].new_cases/7) + (new_cases[2].new_cases/7) + (new_cases[3].new_cases/7)
+			+ (new_cases[4].new_cases/7) + (new_cases[5].new_cases/7) + (new_cases[6].new_cases/7) });
+		for (i = 6 ; i < new_cases.length ; i++)
+		{
+			smooth_cases.push( {"date": new_cases[i].date, "new_cases": (new_cases[i-6].new_cases/7) + (new_cases[i-5].new_cases/7) + (new_cases[i-4].new_cases/7)
+				+ (new_cases[i-3].new_cases/7) + (new_cases[i-2].new_cases/7) + (new_cases[i-1].new_cases/7) + (new_cases[i].new_cases/7) } )
+		}
+
+		smooth_deaths.push( { "date": new_deaths[0].date, "new_deaths": new_deaths[0].new_deaths/7 });
+		smooth_deaths.push( { "date": new_deaths[1].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) });
+		smooth_deaths.push( { "date": new_deaths[2].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths)/7 });
+		smooth_deaths.push( { "date": new_deaths[3].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+			+ (new_deaths[3].new_deaths/7) });
+		smooth_deaths.push( { "date": new_deaths[4].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+			+ (new_deaths[3].new_deaths/7) + (new_deaths[4].new_deaths/7) });
+		smooth_deaths.push( { "date": new_deaths[5].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+			+ (new_deaths[3].new_deaths/7) + (new_deaths[4].new_deaths/7) + (new_deaths[5].new_deaths/7) });
+		smooth_deaths.push( { "date": new_deaths[6].date, "new_deaths": (new_deaths[0].new_deaths/7) + (new_deaths[1].new_deaths/7) + (new_deaths[2].new_deaths/7)
+			+ (new_deaths[3].new_deaths/7) + (new_deaths[4].new_deaths/7) + (new_deaths[5].new_deaths/7) + (new_deaths[6].new_deaths/7) });
+		for (i = 6 ; i < new_deaths.length ; i++)
+		{
+			smooth_deaths.push( {"date": new_deaths[i].date, "new_deaths": (new_deaths[i-6].new_deaths/7) + (new_deaths[i-5].new_deaths/7) + (new_deaths[i-4].new_deaths/7)
+				+ (new_deaths[i-3].new_deaths/7) + (new_deaths[i-2].new_deaths/7) + (new_deaths[i-1].new_deaths/7) + (new_deaths[i].new_deaths/7) } )
+		}
+	}
+
+	// Set up the coordinate axes
+	var firstdate = new Date(d3.min( county_data, d => d.date ));
+	var lastdate = new Date(d3.max( county_data, d => d.date ));
+
+	x.domain([ firstdate, lastdate ]);
+	y.domain([ 0,	 d3.max( new_cases , d => +d.new_cases) ]);
   d3.select("#x_axis").call(xAxis);
 	d3.select("#y_axis").call(yAxis);
 
-	var firstdate = new Date(d3.min( county_data, d => d.date ));
 	d3.select("#first").text( "First case: " + firstdate.toLocaleDateString() );
+	d3.select("#last").text( "Last date in dataset: " + lastdate.toLocaleDateString() );
 	d3.select("#totalcases").text( "Total cases: " + d3.max( county_data, d => +d.cases) );
 	d3.select("#totaldeaths").text( "Total deaths: " + d3.max( county_data, d => +d.deaths) );
 
@@ -221,8 +438,8 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.datum(county_data)
 		.attr("id", "deaths")
 		.attr("fill", "none")
-		.attr("stroke", "steelblue")
-		.attr("stroke-width", 2)
+		.attr("stroke", "red")
+		.attr("stroke-width", 0)
 		.attr("d", d3.line()
 			.x( function(d) { return x( new Date(d.date)) ; })
 			.y( function(d) { return y( +d.deaths ); })) ;
@@ -232,7 +449,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.attr("id", "cases")
 		.attr("fill", "none")
 		.attr("stroke", "steelblue")
-		.attr("stroke-width", 2)
+		.attr("stroke-width", 0)
 		.attr("d", d3.line()
 			.x( function(d) { return x(new Date(d.date) ); })
 			.y( function(d) { return y( +d.cases ); })) ;
@@ -242,7 +459,7 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.attr("id", "new_cases")
 		.attr("fill", "none")
 		.attr("stroke", "steelblue")
-		.attr("stroke-width", 1)
+		.attr("stroke-width", 0)
 		.attr("d", d3.line()
 			.x( function(d) { return x(new Date(d.date) ); })
 			.y( function(d) { return y( +d.new_cases ); })) ;
@@ -252,11 +469,31 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 		.datum(new_deaths)
 		.attr("id", "new_deaths")
 		.attr("fill", "none")
-		.attr("stroke", "steelblue")
-		.attr("stroke-width", 1)
+		.attr("stroke", "red")
+		.attr("stroke-width", 0)
 		.attr("d", d3.line()
 			.x( function(d) { return x(new Date(d.date) ); })
 			.y( function(d) { return y( +d.new_deaths ); })) ;
+
+	svg.append("path")
+		.datum(smooth_deaths)
+		.attr("id", "smooth_deaths")
+		.attr("fill", "none")
+		.attr("stroke", "orange")
+		.attr("stroke-width", 2)
+		.attr("d", d3.line()
+			.x( function(d) { return x(new Date(d.date) ); })
+			.y( function(d) { return y( +d.new_deaths ); })) ;
+
+	svg.append("path")
+		.datum(smooth_cases)
+		.attr("id", "smooth_cases")
+		.attr("fill", "none")
+		.attr("stroke", "orange")
+		.attr("stroke-width", 2)
+		.attr("d", d3.line()
+			.x( function(d) { return x(new Date(d.date) ); })
+			.y( function(d) { return y( +d.new_cases ); })) ;
 
 	// Set up Interaction
 	d3.select("#state")
@@ -286,6 +523,11 @@ d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counti
 			dispGraphs();
 		});
 
+	d3.select("#smoothing")
+		.on("change", function(d)
+		{
+			dispGraphs();
+		});
 
 } );
 
