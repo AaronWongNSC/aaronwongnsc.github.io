@@ -1,6 +1,6 @@
 ---
 layout: post
-title: QIIME2 - Getting Started
+title: QIIME2 -- Getting Started
 tags: QIIME2 projects
 category: learning
 published: True
