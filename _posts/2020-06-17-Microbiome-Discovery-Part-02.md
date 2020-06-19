@@ -27,3 +27,5 @@ The next part talks about some of the practical realities of this area of resear
   + As more microbes have been identified and their DNA sequenced, it's now possible to go back to shotgun sequencing because the recovered DNA can be tracked back to the original microbe by matching it up to the library of known organisms.
 
 The availability of these methods has created a different type of picture of the microbiome. Because so many types of microbes have been identified and not all microbes are in all people, you end up with lots of possibilities but only a relative few positive hits within any sample. This makes the search space very sparse, making results more difficult to interpret.
+
+A "feature" in this context appears to be a specific microbe.
