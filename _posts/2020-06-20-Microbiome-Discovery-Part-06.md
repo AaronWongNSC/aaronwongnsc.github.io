@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Microbiome Discovery - Part 6
-tags: projects bioinformatics microbiome_discovery
+tags: bioinformatics microbiome_discovery
 category: learning
 published: True
 ---
@@ -32,4 +32,4 @@ The $$P(genus)$$ and $$P(TTCAG)$$ terms are ignored because those are assumed (a
 
 The classifier will also give a confidence level of the assignment, which is calculated by a random sampling method. It takes a subset of the k-mers and applies the classification, and determines the frequency that it gets assigned the same way.
 
-He proposes a research project to try to also incorporate the class hierarchy into the process, as that is a well-defined part of the search space that is not used in the RDP classification process. There was some work done ([Chaudhary et al. PLoS ONE 2015](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0116106)) that uses a random forest classifier. 
+He proposes a research project to try to also incorporate the class hierarchy into the process, as that is a well-defined part of the search space that is not used in the RDP classification process. There was some work done ([Chaudhary et al. PLoS ONE 2015](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0116106)) that uses a random forest classifier.

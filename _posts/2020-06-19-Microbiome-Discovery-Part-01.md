@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Microbiome Discovery - Part 1
-tags: projects bioinformatics microbiome_discovery
+tags: bioinformatics microbiome_discovery
 category: learning
 published: True
 ---
