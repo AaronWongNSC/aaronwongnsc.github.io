@@ -1,6 +1,6 @@
 ---
 layout: post
-title: QIIME2 -- Still Figuring It Out
+title: QIIME2 -- Some Progress
 tags: QIIME2 projects bioinformatics
 category: learning
 published: True
