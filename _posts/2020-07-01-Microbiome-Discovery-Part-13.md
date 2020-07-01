@@ -23,4 +23,4 @@ The projection step is matching the points to the nearest point on the quadratic
 
 ## QIIME
 
-He then runs this process in QIIME. The commands here are probably not what you would do in QIIME2.
+He then runs this process in QIIME. The commands here are probably not what you would do in QIIME2, so I didn't pay too much attention to this part.
