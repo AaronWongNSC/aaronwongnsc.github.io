@@ -13,3 +13,4 @@ Once that was done, plotting things was relatively straight-forward. I had to fi
 I provided a sample plot last week for my colleague, and she wanted to customize some of the details (axis thickness, plot thickness, etc.). So I did some more tweaking to try to get those things how she wanted them. This was a good exercise for me because I really had to dig into the details of how R's plot function works, and make sure I understood all of the various parameters that could be set.
 
 Once this gets approved, I can then go on to the specific modules she's trying to create and attempt to generate those graphs. This will be a bit more complex because there will likely be some calculations that need to be made instead of just plotting straight data.
+ 
