@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NevCAN -- Plot Details
+title: NevCAN -- Update
 tags: NevCAN projects environmental_data
 category: learning
 published: True
