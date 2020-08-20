@@ -1,5 +1,7 @@
-let canvas = document.getElementById('OneDigitAddition');
-let ctx = canvas.getContext('2d');
+let onedigitcanvas = document.getElementById('OneDigitAddition');
+let ctx1 = onedigitcanvas.getContext('2d');
+
+
 
 class TextBox {
   constructor(x, y, text) {
@@ -49,7 +51,7 @@ class TenBlock {
     this.size = cubesize;
   }
 
-  draw(ctx) {
+  draw(ctx1) {
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 3;
     for (i = 1; i <= 10; i++) {
@@ -59,7 +61,7 @@ class TenBlock {
 }
 
 function clearScreen() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.clearRect(0, 0, WIDTH, HEIGHT)
 }
 
 function update() {
@@ -72,7 +74,7 @@ function update() {
       animation = 1;
 
       secondnumber.text = secondval - movingobjects.length;
-      movingnumber = new TextBox( 3 * canvas.width / 6, 150, 10 - firstval)
+      movingnumber = new TextBox( 3 * WIDTH / 6, 150, 10 - firstval)
       drawobjects.push(movingnumber)
     }
   }
@@ -95,15 +97,15 @@ function update() {
       animation = 3;
       framecount = 0;
 
-      drawobjects.push(new TextBox(5 * canvas.width / 6, 500, firstval + secondval));
-      drawobjects.push(new TenBlock(5 * canvas.width / 6 - cubesize, 450));
-      drawobjects.push(new TenBlock(5 * canvas.width / 6 + cubesize, 450));
+      drawobjects.push(new TextBox(5 * WIDTH / 6, 500, firstval + secondval));
+      drawobjects.push(new TenBlock(5 * WIDTH / 6 - cubesize, 450));
+      drawobjects.push(new TenBlock(5 * WIDTH / 6 + cubesize, 450));
 
       for (i = 0; i < 10; i ++) {
-        drawobjects.push(new UnitCube(5 * canvas.width / 6 - cubesize, 450 - cubesize * i));
+        drawobjects.push(new UnitCube(5 * WIDTH / 6 - cubesize, 450 - cubesize * i));
       }
       for (i = 0; i < firstval + secondval - 10; i ++) {
-        drawobjects.push(new UnitCube(5 * canvas.width / 6 + cubesize, 450 - cubesize * i));
+        drawobjects.push(new UnitCube(5 * WIDTH / 6 + cubesize, 450 - cubesize * i));
       }
     }
   } else if (animation == 3) {
@@ -120,6 +122,8 @@ function update() {
 }
 
 function reset() {
+  WIDTH = onedigitcanvas.width;
+  HEIGHT = onedigitcanvas.height;
   animation = 0;
   framecount = 0;
 
@@ -129,32 +133,32 @@ function reset() {
   frozenobjects = [];
   movingobjects = [];
 
-  frozenobjects.push(new TextBox( canvas.width/6, 500, firstval));
-  frozenobjects.push(new TextBox( 2 * canvas.width/6, 500, '+'));
-  frozenobjects.push(new TextBox( 3 * canvas.width/6, 500, secondval));
-  frozenobjects.push(new TextBox( 4 * canvas.width/6, 500, '='));
+  frozenobjects.push(new TextBox( WIDTH/6, 500, firstval));
+  frozenobjects.push(new TextBox( 2 * WIDTH/6, 500, '+'));
+  frozenobjects.push(new TextBox( 3 * WIDTH/6, 500, secondval));
+  frozenobjects.push(new TextBox( 4 * WIDTH/6, 500, '='));
 
-  frozenobjects.push(new TenBlock( canvas.width / 6, 450))
-  frozenobjects.push(new TenBlock( 3 * canvas.width / 6, 450))
+  frozenobjects.push(new TenBlock( WIDTH / 6, 450))
+  frozenobjects.push(new TenBlock( 3 * WIDTH / 6, 450))
 
   for (i = 0; i < firstval; i++){
-    frozenobjects.push(new UnitCube( canvas.width / 6, 450 - i * cubesize ))
+    frozenobjects.push(new UnitCube( WIDTH / 6, 450 - i * cubesize ))
   }
   for (i = 0; i < secondval - (10 - firstval); i++){
-    frozenobjects.push(new UnitCube( 3 * canvas.width / 6, 450 - i * cubesize ))
+    frozenobjects.push(new UnitCube( 3 * WIDTH / 6, 450 - i * cubesize ))
   }
 
   for (i = 0; i < 10 - firstval; i++){
-    movingobjects.push(new UnitCube( 3 * canvas.width / 6, 450 - (secondval - i - 1) * cubesize));
+    movingobjects.push(new UnitCube( 3 * WIDTH / 6, 450 - (secondval - i - 1) * cubesize));
   }
   drawobjects = frozenobjects.concat(movingobjects);
 
-  firstnumber = new TextBox( canvas.width / 6, 150, firstval);
-  secondnumber = new TextBox( 3 * canvas.width / 6, 150, secondval);
+  firstnumber = new TextBox( WIDTH / 6, 150, firstval);
+  secondnumber = new TextBox( 3 * WIDTH / 6, 150, secondval);
 
   updatingtextobjects = [firstnumber, secondnumber];
 
-  dx = - (2 * canvas.width / 6) / animationlength;
+  dx = - (2 * WIDTH / 6) / animationlength;
   dy = - (cubesize * (10 - secondval)) / animationlength;
 
   drawobjects = frozenobjects.concat(movingobjects).concat(updatingtextobjects);
