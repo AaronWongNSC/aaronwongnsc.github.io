@@ -51,7 +51,7 @@ class TenBlock {
     this.size = cubesize;
   }
 
-  draw(ctx1) {
+  draw(ctx) {
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 3;
     for (i = 1; i <= 10; i++) {
@@ -60,12 +60,12 @@ class TenBlock {
   }
 }
 
-function clearScreen() {
+function clearScreen(ctx) {
   ctx.clearRect(0, 0, WIDTH, HEIGHT)
 }
 
 function update() {
-  clearScreen();
+  clearScreen(ctx1);
   framecount ++;
 
   if (animation == 0) {
@@ -115,7 +115,7 @@ function update() {
   }
 
   drawobjects.forEach(function(item, index ) {
-    item.draw(ctx);
+    item.draw(ctx1);
   });
   requestAnimationFrame(update);
 
