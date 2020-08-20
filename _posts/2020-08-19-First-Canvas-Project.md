@@ -12,6 +12,6 @@ The previous attempt at learning JavaScript was learning d3, but then I found ou
 
 (As a side note, I believe that there are libraries with both R and Python that can generate web-ready output, but I haven't really looked into that.)
 
-My project is a simple graphical visualization of adding one-digit numbers. There's not a whole lot going on here. Just drawing some boxes and moving things around on a timer. I did have a version where you had to press a button to make it go to the next animation, but I decided that I wanted it to just loop around. Here is the link: [Mental Addition by Completing Groupings](aaronwongnsc.github.io/files/js-practice/CompletingGroupings.html).
+My project is a simple graphical visualization of adding one-digit numbers. There's not a whole lot going on here. Just drawing some boxes and moving things around on a timer. I did have a version where you had to press a button to make it go to the next animation, but I decided that I wanted it to just loop around. Here is the link: [Mental Addition by Completing Groupings](https://aaronwongnsc.github.io/files/js-practice/CompletingGroupings.html).
 
 I'll try to do larger examples later, perhaps.
