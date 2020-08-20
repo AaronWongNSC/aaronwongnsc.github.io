@@ -1,0 +1,116 @@
+<html>
+
+<head>
+  <title>Mental Addition by Completing Groupings</title>
+  <meta charset='utf-8'/>
+  <style>
+    #OneDigitAddition {
+      border: 1px solid black;
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <center> <h2> Addition by Completing Groupings </h2> </center>
+  <br><br>
+  This is just a quick visualization for mental addition problems. Although you can conceptualize the first example as teaching the concept of "carrying the one," I much prefer to think of this as a representation of regrouping as a technique for addition. One of the challenges with this is that it takes a lot of words to describe something intuitive, and this is ultimately an intuitive process. But the core idea is that "8 + 6" is in some ways a slower and more complex calculation than "6 - 2" (because the numbers of the first calculation are bigger), and so it is less mentally taxing to conceptualize the latter. (Don't worry about where the 6 and the 2 came from for now.) For one digit calculations, this doesn't show much benefit, but for larger calculations (such as "378 + 257") the value is more apparent.
+  <br><br>
+  The process can be broken into a sequence of questions:
+  <ul>
+    <li> Question 1: How many pieces are needed to complete the group?</li>
+    <li> Question 2: How many pieces are in the completed group?</li>
+    <li> Question 3: How many pieces remain after those pieces have been removed?</li>
+    <li> Question 4: How many total pieces do you have? </li>
+  </ul>
+  <h3> Example 1: 8 + 6 </h3>
+  <ul>
+    <li> Question 1: How many pieces are needed to complete the group?</li>
+    <ul>
+      <li>There are 8 pieces on the left, which requires 2 more pieces to complete the group.</li>
+    </ul>
+    <li> Question 2: How many pieces are in the completed group?</li>
+    <ul>
+      <li>There are 10 pieces in the completed group.</li>
+    </ul>
+    <li> Question 3: How many pieces remain after those pieces have been removed?</li>
+    <ul>
+      <li>6 - 2 = 4. There are 4 pieces left.</li>
+    </ul>
+    <li> Question 4: How many total pieces do you have? </li>
+    <ul>
+      <li>There are 10 + 4 pieces, or 14 pieces.</li>
+    </ul>
+  </ul>
+  This animation is on a perpetual loop with random one digit addition calculations that visualize this technique.
+  <center>
+    <canvas id = 'OneDigitAddition' width = '800' height = '600'></canvas>
+    <script src = 'src/OneDigitAddition.js'></script>
+  </center>
+  <h3> Example 2: 39 + 7 </h3>
+  The trick to this one is that your brain is capable of converting the 39 to a 40 with relative ease, and 40 + 6 is an easy calculation.
+  <ul>
+    <li> Question 1: How many pieces are needed to complete the group?</li>
+    <ul>
+      <li>There are 39 pieces on the left, which requires 1 more piece to complete the group.</li>
+    </ul>
+    <li> Question 2: How many pieces are in the completed group?</li>
+    <ul>
+      <li>There are 40 pieces in the completed group.</li>
+    </ul>
+    <li> Question 3: How many pieces remain after those pieces have been removed?</li>
+    <ul>
+      <li>7 - 1 = 6. There are 6 pieces left.</li>
+    </ul>
+    <li> Question 4: How many total pieces do you have? </li>
+    <ul>
+      <li>There are 40 + 6 pieces, or 46 pieces.</li>
+    </ul>
+  </ul>
+  (( Animations eventually? ))
+  <h3> Example 3: 48 + 37 </h3>
+  If you are comfortable with one digit addition (and you should be), then it's not much to ask your brain to do 5 + 3 (or really, 50 + 30).
+  <ul>
+    <li> Question 1: How many pieces are needed to complete the group?</li>
+    <ul>
+      <li>There are 48 pieces on the left, which requires 2 more pieces to complete the group.</li>
+    </ul>
+    <li> Question 2: How many pieces are in the completed group?</li>
+    <ul>
+      <li>There are 50 pieces in the completed group.</li>
+    </ul>
+    <li> Question 3: How many pieces remain after those pieces have been removed?</li>
+    <ul>
+      <li>37 - 2 = 35. There are 35 pieces left.</li>
+    </ul>
+    <li> Question 4: How many total pieces do you have? </li>
+    <ul>
+      <li>There are 50 + 35 pieces, or 85 pieces.</li>
+    </ul>
+  </ul>
+  (( Animations eventually? ))
+  <h3> Example 4: 378 + 257 </h3>
+  This will take practice, but once you get it you will find this is not nearly as scary as it first appears.
+  <ul>
+    <li> Question 1: How many pieces are needed to complete the group?</li>
+    <ul>
+      <li>There are 378 pieces on the left, which requires 22 more pieces to complete the group.</li>
+    </ul>
+    <li> Question 2: How many pieces are in the completed group?</li>
+    <ul>
+      <li>There are 400 pieces in the completed group.</li>
+    </ul>
+    <li> Question 3: How many pieces remain after those pieces have been removed?</li>
+    <ul>
+      <li>257 - 22 = 235. There are 235 pieces left.</li>
+    </ul>
+    <li> Question 4: How many total pieces do you have? </li>
+    <ul>
+      <li>There are 400 + 235 pieces, or 635 pieces.</li>
+    </ul>
+  </ul>
+  (( Animations eventually? ))
+</body>
+
+
+</html>
