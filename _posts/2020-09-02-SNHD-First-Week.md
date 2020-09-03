@@ -1,6 +1,6 @@
 ---
 layout: post
-title: First Shiny Project
+title: SNHD - First Week
 tags: SNHD R Shiny
 category: learning
 published: True
